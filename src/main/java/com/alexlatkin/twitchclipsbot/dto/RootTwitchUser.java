@@ -12,4 +12,11 @@ import java.util.ArrayList;
 @NoArgsConstructor
 public class RootTwitchUser {
     public ArrayList<TwitchUser> data;
+
+    @Override
+    public String toString() {
+        return "RootTwitchUser{" +
+                "data=" + data +
+                '}';
+    }
 }

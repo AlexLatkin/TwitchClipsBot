@@ -24,4 +24,20 @@ public class TwitchUser {
     public String offline_image_url;
     public int view_count;
     public Date created_at;
+
+    @Override
+    public String toString() {
+        return "TwitchUser{" +
+                "id=" + id +
+                ", login='" + login + '\'' +
+                ", display_name='" + display_name + '\'' +
+                ", type='" + type + '\'' +
+                ", broadcaster_type='" + broadcaster_type + '\'' +
+                ", description='" + description + '\'' +
+                ", profile_image_url='" + profile_image_url + '\'' +
+                ", offline_image_url='" + offline_image_url + '\'' +
+                ", view_count=" + view_count +
+                ", created_at=" + created_at +
+                '}';
+    }
 }

@@ -16,5 +16,6 @@ public class Test1 {
         VideoClipsController videoClipsController = new VideoClipsController(twitchVideoClipsService);
 
         System.out.println(videoClipsController.getUserId("qsnake"));
+
     }
 }

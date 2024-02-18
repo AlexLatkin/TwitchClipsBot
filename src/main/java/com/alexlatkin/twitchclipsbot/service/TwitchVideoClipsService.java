@@ -49,7 +49,7 @@ public class TwitchVideoClipsService implements VideoClipsService {
     }
 
     @Override
-    public TwitchUser getUsers(String broadcasterName) throws IOException, InterruptedException, URISyntaxException {
+    public int getBroadcasterId(String broadcasterName) throws IOException, InterruptedException, URISyntaxException {
 
         var uri = new URI("https://api.twitch.tv/helix/users?login=" + broadcasterName);
 
@@ -71,6 +71,6 @@ public class TwitchVideoClipsService implements VideoClipsService {
 
         rootTwitchUser = mapper.readValue(response.body(), RootTwitchUser.class);
 
-        return rootTwitchUser.getData().get(0);
+        return rootTwitchUser.getData().get(0).getId();
     }
 }

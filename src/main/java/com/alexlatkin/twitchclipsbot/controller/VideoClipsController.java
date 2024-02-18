@@ -3,9 +3,10 @@ package com.alexlatkin.twitchclipsbot.controller;
 import com.alexlatkin.twitchclipsbot.dto.VideoClipsDto;
 import com.alexlatkin.twitchclipsbot.service.VideoClipsService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.List;
 
 @RestController
@@ -18,5 +19,9 @@ public class VideoClipsController {
     }
     public VideoClipsDto getVideoClipsByGameId(Long gameId) {
         return videoClipsService.getVideoClipsByGameId(gameId);
+    }
+
+    public int getUserId(String broadcasterName) throws IOException, InterruptedException, URISyntaxException {
+        return videoClipsService.getBroadcasterId(broadcasterName);
     }
 }

@@ -4,6 +4,9 @@ import com.alexlatkin.twitchclipsbot.dto.RootTwitchGame;
 import com.alexlatkin.twitchclipsbot.dto.RootTwitchUser;
 import com.alexlatkin.twitchclipsbot.dto.TwitchGameDto;
 import com.alexlatkin.twitchclipsbot.dto.VideoClipsDto;
+import com.alexlatkin.twitchclipsbot.model.VideoClip;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sun.net.httpserver.Headers;
 import org.springframework.beans.factory.annotation.Value;
@@ -11,6 +14,7 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -40,9 +44,34 @@ public class TwitchVideoClipsService implements VideoClipsService {
     }
 
     @Override
-    public VideoClipsDto getVideoClipsByGameId(Long gameId) {
+    public List<VideoClip> getVideoClipsByGameName(String gameName) throws IOException, InterruptedException, URISyntaxException {
+        TwitchVideoClipsService twitchVideoClipsService = new TwitchVideoClipsService();
 
-        return null;
+        var gameId = twitchVideoClipsService.getGameId(gameName);
+
+        System.out.println(gameId);
+
+        var uri = new URI("https://api.twitch.tv/helix/clips?game_id=" + gameId);
+
+        var client = HttpClient.newHttpClient();
+
+        var request = HttpRequest.newBuilder()
+                .GET()
+                .uri(uri)
+                .header("Authorization", "Bearer u78uni2ggpp350gqsdk9s0n6jd3gzg")
+                .header("Client-Id", "kuwtiwhhj9q8stp6yvjo4cxp866xf4")
+                .timeout(Duration.ofSeconds(10))
+                .build();
+
+        var response = client.send(request, HttpResponse.BodyHandlers.ofString(StandardCharsets.UTF_8));
+
+        ObjectMapper mapper = new ObjectMapper();
+
+        VideoClipsDto videoClipsDto;
+
+        videoClipsDto = mapper.readValue(response.body(), VideoClipsDto.class);
+
+        return videoClipsDto.getData();
     }
 
     @Override

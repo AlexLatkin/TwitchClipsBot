@@ -24,4 +24,8 @@ public class VideoClipsController {
     public int getUserId(String broadcasterName) throws IOException, InterruptedException, URISyntaxException {
         return videoClipsService.getBroadcasterId(broadcasterName);
     }
+
+    public int getGameId(String gameName) throws URISyntaxException, IOException, InterruptedException {
+        return videoClipsService.getGameId(gameName);
+    }
 }

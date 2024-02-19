@@ -1,7 +1,8 @@
 package com.alexlatkin.twitchclipsbot.service;
 
+import com.alexlatkin.twitchclipsbot.dto.RootTwitchGame;
 import com.alexlatkin.twitchclipsbot.dto.RootTwitchUser;
-import com.alexlatkin.twitchclipsbot.dto.TwitchUser;
+import com.alexlatkin.twitchclipsbot.dto.TwitchGameDto;
 import com.alexlatkin.twitchclipsbot.dto.VideoClipsDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sun.net.httpserver.Headers;
@@ -40,12 +41,34 @@ public class TwitchVideoClipsService implements VideoClipsService {
 
     @Override
     public VideoClipsDto getVideoClipsByGameId(Long gameId) {
+
         return null;
     }
 
     @Override
-    public Long getGames(String gameName) {
-        return null;
+    public int getGameId(String gameName) throws URISyntaxException, IOException, InterruptedException {
+        var uri = new URI("https://api.twitch.tv/helix/games?name=" + gameName.replace(" ", "%20"));
+
+        var client = HttpClient.newHttpClient();
+
+        var request = HttpRequest.newBuilder()
+                .GET()
+                .uri(uri)
+                .header("Authorization", "Bearer u78uni2ggpp350gqsdk9s0n6jd3gzg")
+                .header("Client-Id", "kuwtiwhhj9q8stp6yvjo4cxp866xf4")
+                .timeout(Duration.ofSeconds(10))
+                .build();
+
+        var response = client.send(request, HttpResponse.BodyHandlers.ofString(StandardCharsets.UTF_8));
+
+
+        ObjectMapper mapper = new ObjectMapper();
+
+        RootTwitchGame rootTwitchGame = new RootTwitchGame();
+
+        rootTwitchGame = mapper.readValue(response.body(), RootTwitchGame.class);
+
+        return rootTwitchGame.getData().get(0).getId();
     }
 
     @Override

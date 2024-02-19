@@ -9,6 +9,6 @@ import java.util.List;
 public interface VideoClipsService {
     VideoClipsDto getVideoClipsByBroadcastersId(List<Long> BroadcasterId);
     VideoClipsDto getVideoClipsByGameId(Long gameId);
-    Long getGames(String gameName);
+    int getGameId(String gameName) throws URISyntaxException, IOException, InterruptedException;
     int getBroadcasterId(String broadcasterName) throws IOException, InterruptedException, URISyntaxException;
 }

@@ -49,8 +49,6 @@ public class TwitchVideoClipsService implements VideoClipsService {
 
         var gameId = twitchVideoClipsService.getGameId(gameName);
 
-        System.out.println(gameId);
-
         var uri = new URI("https://api.twitch.tv/helix/clips?game_id=" + gameId);
 
         var client = HttpClient.newHttpClient();

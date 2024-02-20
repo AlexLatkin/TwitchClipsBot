@@ -1,6 +1,6 @@
 package com.alexlatkin.twitchclipsbot.dto;
 
-import com.alexlatkin.twitchclipsbot.model.VideoClip;
+import com.alexlatkin.twitchclipsbot.model.TwitchClip;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 
@@ -9,20 +9,20 @@ import java.util.List;
 @Getter
 @Setter
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class VideoClipsDto {
+public class TwitchClipsDto {
 
-    private List<VideoClip> data;
+    private List<TwitchClip> data;
 
-    public VideoClipsDto() {
+    public TwitchClipsDto() {
     }
 
-    public VideoClipsDto(List<VideoClip> videoClips) {
-        this.data = videoClips;
+    public TwitchClipsDto(List<TwitchClip> twitchClips) {
+        this.data = twitchClips;
     }
 
     @Override
     public String toString() {
-        return "VideoClipsDto{" +
+        return "TwitchClipsDto{" +
                 "videoClips=" + data +
                 '}';
     }

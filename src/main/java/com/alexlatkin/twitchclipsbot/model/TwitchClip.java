@@ -2,9 +2,7 @@ package com.alexlatkin.twitchclipsbot.model;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.Date;
@@ -12,7 +10,7 @@ import java.util.Date;
 @Getter
 @Setter
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class VideoClip {
+public class TwitchClip {
     public String id;
     public String url;
     public String embed_url;
@@ -33,10 +31,10 @@ public class VideoClip {
 
 
 
-    public VideoClip() {
+    public TwitchClip() {
     }
 
-    public VideoClip(String id, String url, String embed_url, int broadcaster_id, String broadcaster_name, int creator_id, String creator_name, int video_id, int game_id, String language, String title, int view_count, Date created_at, String thumbnail_url, double duration, int vod_offset, boolean is_featured) {
+    public TwitchClip(String id, String url, String embed_url, int broadcaster_id, String broadcaster_name, int creator_id, String creator_name, int video_id, int game_id, String language, String title, int view_count, Date created_at, String thumbnail_url, double duration, int vod_offset, boolean is_featured) {
         this.id = id;
         this.url = url;
         this.embed_url = embed_url;
@@ -60,7 +58,7 @@ public class VideoClip {
 
     @Override
     public String toString() {
-        return "VideoClip{" +
+        return "TwitchClip{" +
                 "id=" + id +
                 ", url='" + url + '\'' +
                 ", embed_url='" + embed_url + '\'' +

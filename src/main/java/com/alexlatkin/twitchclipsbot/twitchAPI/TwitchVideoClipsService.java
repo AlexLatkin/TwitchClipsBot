@@ -1,12 +1,9 @@
-package com.alexlatkin.twitchclipsbot.service;
+package com.alexlatkin.twitchclipsbot.twitchAPI;
 
 import com.alexlatkin.twitchclipsbot.dto.RootTwitchGame;
 import com.alexlatkin.twitchclipsbot.dto.RootTwitchUser;
-import com.alexlatkin.twitchclipsbot.dto.TwitchGameDto;
-import com.alexlatkin.twitchclipsbot.dto.VideoClipsDto;
-import com.alexlatkin.twitchclipsbot.model.VideoClip;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
+import com.alexlatkin.twitchclipsbot.dto.TwitchClipsDto;
+import com.alexlatkin.twitchclipsbot.model.TwitchClip;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sun.net.httpserver.Headers;
 import org.springframework.beans.factory.annotation.Value;
@@ -14,7 +11,6 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.lang.reflect.Type;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -39,12 +35,12 @@ public class TwitchVideoClipsService implements VideoClipsService {
     private Headers headers;
 
     @Override
-    public VideoClipsDto getVideoClipsByBroadcastersId(List<Long> BroadcasterId) {
+    public TwitchClipsDto getVideoClipsByBroadcastersId(List<Long> BroadcasterId) {
         return null;
     }
 
     @Override
-    public List<VideoClip> getVideoClipsByGameName(String gameName) throws IOException, InterruptedException, URISyntaxException {
+    public List<TwitchClip> getVideoClipsByGameName(String gameName) throws IOException, InterruptedException, URISyntaxException {
         TwitchVideoClipsService twitchVideoClipsService = new TwitchVideoClipsService();
 
         var gameId = twitchVideoClipsService.getGameId(gameName);
@@ -65,11 +61,11 @@ public class TwitchVideoClipsService implements VideoClipsService {
 
         ObjectMapper mapper = new ObjectMapper();
 
-        VideoClipsDto videoClipsDto;
+        TwitchClipsDto twitchClipsDto;
 
-        videoClipsDto = mapper.readValue(response.body(), VideoClipsDto.class);
+        twitchClipsDto = mapper.readValue(response.body(), TwitchClipsDto.class);
 
-        return videoClipsDto.getData();
+        return twitchClipsDto.getData();
     }
 
     @Override

@@ -1,9 +1,9 @@
-package com.alexlatkin.twitchclipsbot.service;
+package com.alexlatkin.twitchclipsbot.twitchAPI;
 
 import com.alexlatkin.twitchclipsbot.dto.RootTwitchGame;
 import com.alexlatkin.twitchclipsbot.dto.RootTwitchUser;
-import com.alexlatkin.twitchclipsbot.dto.TwitchGameDto;
-import com.alexlatkin.twitchclipsbot.dto.VideoClipsDto;
+import com.alexlatkin.twitchclipsbot.dto.TwitchClipsDto;
+import com.alexlatkin.twitchclipsbot.model.TwitchClip;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sun.net.httpserver.Headers;
 import org.springframework.beans.factory.annotation.Value;
@@ -35,14 +35,37 @@ public class TwitchVideoClipsService implements VideoClipsService {
     private Headers headers;
 
     @Override
-    public VideoClipsDto getVideoClipsByBroadcastersId(List<Long> BroadcasterId) {
+    public TwitchClipsDto getVideoClipsByBroadcastersId(List<Long> BroadcasterId) {
         return null;
     }
 
     @Override
-    public VideoClipsDto getVideoClipsByGameId(Long gameId) {
+    public List<TwitchClip> getVideoClipsByGameName(String gameName) throws IOException, InterruptedException, URISyntaxException {
+        TwitchVideoClipsService twitchVideoClipsService = new TwitchVideoClipsService();
 
-        return null;
+        var gameId = twitchVideoClipsService.getGameId(gameName);
+
+        var uri = new URI("https://api.twitch.tv/helix/clips?game_id=" + gameId);
+
+        var client = HttpClient.newHttpClient();
+
+        var request = HttpRequest.newBuilder()
+                .GET()
+                .uri(uri)
+                .header("Authorization", "Bearer u78uni2ggpp350gqsdk9s0n6jd3gzg")
+                .header("Client-Id", "kuwtiwhhj9q8stp6yvjo4cxp866xf4")
+                .timeout(Duration.ofSeconds(10))
+                .build();
+
+        var response = client.send(request, HttpResponse.BodyHandlers.ofString(StandardCharsets.UTF_8));
+
+        ObjectMapper mapper = new ObjectMapper();
+
+        TwitchClipsDto twitchClipsDto;
+
+        twitchClipsDto = mapper.readValue(response.body(), TwitchClipsDto.class);
+
+        return twitchClipsDto.getData();
     }
 
     @Override

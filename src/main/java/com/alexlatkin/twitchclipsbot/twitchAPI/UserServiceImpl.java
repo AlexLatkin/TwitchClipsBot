@@ -29,6 +29,8 @@ public class UserServiceImpl implements UserService {
     public TwitchUser getUser(String userName) throws URISyntaxException, IOException, InterruptedException {
         var uri = new URI(twitchApiConfig.getUrl() +"users?login=" + userName);
 
+        System.out.println(uri);
+
         var client = HttpClient.newHttpClient();
 
         var request = HttpRequest.newBuilder()

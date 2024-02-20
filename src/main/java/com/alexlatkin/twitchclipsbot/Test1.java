@@ -5,6 +5,7 @@ import com.alexlatkin.twitchclipsbot.controller.VideoClipsController;
 import com.alexlatkin.twitchclipsbot.twitchAPI.TwitchVideoClipsService;
 import com.alexlatkin.twitchclipsbot.twitchAPI.UserService;
 import com.alexlatkin.twitchclipsbot.twitchAPI.UserServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import java.io.IOException;
@@ -22,7 +23,11 @@ public class Test1 {
 //
 //        System.out.println(videoClipsController.getVideoClipsByGameName("Dota 2"));
 
-        UserService userService = new UserServiceImpl();
+
+
+
+
+        UserService userService = new UserServiceImpl(new TwitchApiConfig());
 
         VideoClipsController videoClipsController = new VideoClipsController(userService);
 

@@ -8,7 +8,7 @@ import org.springframework.context.annotation.PropertySource;
 @PropertySource("classpath:application.properties")
 public class ApplicationConfig {
 
-    @Bean
+    @Bean(name = "qwe")
     public TwitchApiConfig twitchApiConfig() {
         return new TwitchApiConfig();
     }

@@ -25,9 +25,6 @@ public class Test1 {
 //        System.out.println(videoClipsController.getVideoClipsByGameName("Dota 2"));
 
 
-
-
-
         UserService userService = new UserServiceImpl();
 
         VideoClipsController videoClipsController = new VideoClipsController(userService);

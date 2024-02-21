@@ -1,10 +1,12 @@
 package com.alexlatkin.twitchclipsbot.twitchAPI;
 
 import com.alexlatkin.twitchclipsbot.config.TwitchApiConfig;
+import com.alexlatkin.twitchclipsbot.dto.RootTwitchUser;
 import com.alexlatkin.twitchclipsbot.dto.TwitchUser;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -18,16 +20,16 @@ import java.time.Duration;
 
 @Service
 public class UserServiceImpl implements UserService {
-    TwitchApiConfig twitchApiConfig;
 
-    @Autowired
-    public UserServiceImpl(TwitchApiConfig twitchApiConfig) {
-        this.twitchApiConfig = twitchApiConfig;
-    }
+    private static final String URL = "https://api.twitch.tv/helix/users?login=";
+    private static final String FIRST_HEADER_NAME = "Authorization";
+    private static final String FIRST_HEADER_VALUE = "Bearer u78uni2ggpp350gqsdk9s0n6jd3gzg";
+    private static final String SECOND_HEADER_NAME = "Client-Id";
+    private static final String SECOND_HEADER_VALUE = "kuwtiwhhj9q8stp6yvjo4cxp866xf4";
 
     @Override
     public TwitchUser getUser(String userName) throws URISyntaxException, IOException, InterruptedException {
-        var uri = new URI(twitchApiConfig.getUrl() +"users?login=" + userName);
+        var uri = new URI(URL + userName);
 
         System.out.println(uri);
 
@@ -36,8 +38,8 @@ public class UserServiceImpl implements UserService {
         var request = HttpRequest.newBuilder()
                 .GET()
                 .uri(uri)
-                .header(twitchApiConfig.getFirstHeaderName(), twitchApiConfig.getFirstHeaderValue())
-                .header(twitchApiConfig.getSecondHeaderName(), twitchApiConfig.getSecondHeaderValue())
+                .header(FIRST_HEADER_NAME, FIRST_HEADER_VALUE)
+                .header(SECOND_HEADER_NAME, SECOND_HEADER_VALUE)
                 .timeout(Duration.ofSeconds(20))
                 .build();
 
@@ -45,11 +47,11 @@ public class UserServiceImpl implements UserService {
 
         ObjectMapper mapper = new ObjectMapper();
 
-        TwitchUser twitchUser;
+        RootTwitchUser rootTwitchUser;
 
-        twitchUser = mapper.readValue(response.body(), TwitchUser.class);
+        rootTwitchUser = mapper.readValue(response.body(), RootTwitchUser.class);
 
 
-        return twitchUser;
+        return rootTwitchUser.getData().get(0);
     }
 }

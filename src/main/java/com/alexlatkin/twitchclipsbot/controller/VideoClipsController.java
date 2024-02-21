@@ -35,6 +35,6 @@ public class VideoClipsController {
 //    }
 
     public TwitchUser getUser(String userName) throws URISyntaxException, IOException, InterruptedException {
-        return userService.getUser("qsnake");
+        return userService.getUser(userName);
     }
 }

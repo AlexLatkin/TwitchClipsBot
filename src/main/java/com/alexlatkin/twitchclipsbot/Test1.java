@@ -2,6 +2,7 @@ package com.alexlatkin.twitchclipsbot;
 
 import com.alexlatkin.twitchclipsbot.config.TwitchApiConfig;
 import com.alexlatkin.twitchclipsbot.controller.VideoClipsController;
+import com.alexlatkin.twitchclipsbot.dto.TwitchUser;
 import com.alexlatkin.twitchclipsbot.twitchAPI.TwitchVideoClipsService;
 import com.alexlatkin.twitchclipsbot.twitchAPI.UserService;
 import com.alexlatkin.twitchclipsbot.twitchAPI.UserServiceImpl;
@@ -27,11 +28,11 @@ public class Test1 {
 
 
 
-        UserService userService = new UserServiceImpl(new TwitchApiConfig());
+        UserService userService = new UserServiceImpl();
 
         VideoClipsController videoClipsController = new VideoClipsController(userService);
 
-        System.out.println(videoClipsController.getUser("qsnake").getId());
+        System.out.println(videoClipsController.getUser("mariachi").getDescription());
 
 //        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
 

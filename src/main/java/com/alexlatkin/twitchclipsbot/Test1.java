@@ -31,6 +31,8 @@ public class Test1 {
 
         System.out.println(videoClipsController.getUser("mariachi").getDescription());
 
+
+
 //        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
 
 //        TwitchApiConfig twitchApiConfig = new TwitchApiConfig();

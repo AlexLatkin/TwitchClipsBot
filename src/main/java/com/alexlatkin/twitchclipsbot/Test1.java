@@ -1,13 +1,10 @@
 package com.alexlatkin.twitchclipsbot;
 
-import com.alexlatkin.twitchclipsbot.config.TwitchApiConfig;
 import com.alexlatkin.twitchclipsbot.controller.VideoClipsController;
-import com.alexlatkin.twitchclipsbot.dto.TwitchUser;
-import com.alexlatkin.twitchclipsbot.twitchAPI.TwitchVideoClipsService;
-import com.alexlatkin.twitchclipsbot.twitchAPI.UserService;
-import com.alexlatkin.twitchclipsbot.twitchAPI.UserServiceImpl;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import com.alexlatkin.twitchclipsbot.service.ClipService;
+import com.alexlatkin.twitchclipsbot.service.ClipServiceImpl;
+import com.alexlatkin.twitchclipsbot.twitchAPI.TwitchService;
+import com.alexlatkin.twitchclipsbot.twitchAPI.TwitchServiceImpl;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -15,37 +12,15 @@ import java.net.URISyntaxException;
 public class Test1 {
     public static void main(String[] args) throws IOException, InterruptedException, URISyntaxException {
 
-//        TwitchVideoClipsService twitchVideoClipsService = new TwitchVideoClipsService();
-//
-//        VideoClipsController videoClipsController = new VideoClipsController(twitchVideoClipsService);
-//
-//        System.out.println(videoClipsController.getUserId("qsnake"));
-//        System.out.println(videoClipsController.getGameId("Dota 2"));
-//
-//        System.out.println(videoClipsController.getVideoClipsByGameName("Dota 2"));
+        TwitchService twitchService = new TwitchServiceImpl();
+
+        VideoClipsController videoClipsController = new VideoClipsController(twitchService);
+
+        System.out.println(videoClipsController.getGameInfo("Dota 2"));
 
 
-        UserService userService = new UserServiceImpl();
+        ClipService clipService = new ClipServiceImpl(twitchService);
 
-        VideoClipsController videoClipsController = new VideoClipsController(userService);
-
-        System.out.println(videoClipsController.getUser("mariachi").getDescription());
-
-
-
-
-
-
-
-
-//        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
-
-//        TwitchApiConfig twitchApiConfig = new TwitchApiConfig();
-//
-//        System.out.println(twitchApiConfig);
-
-
-
-
+        System.out.println(clipService.getClipsByBroadcasterName("qSnake"));
     }
 }

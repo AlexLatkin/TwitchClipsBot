@@ -14,4 +14,14 @@ public class TwitchGameDto {
     public String name;
     public String boxArtUrl;
     public String igdbId;
+
+    @Override
+    public String toString() {
+        return "TwitchGameDto{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", boxArtUrl='" + boxArtUrl + '\'' +
+                ", igdbId='" + igdbId + '\'' +
+                '}';
+    }
 }

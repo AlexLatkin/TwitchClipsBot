@@ -1,13 +1,8 @@
 package com.alexlatkin.twitchclipsbot;
 
-import com.alexlatkin.twitchclipsbot.config.TwitchApiConfig;
 import com.alexlatkin.twitchclipsbot.controller.VideoClipsController;
-import com.alexlatkin.twitchclipsbot.dto.TwitchUser;
-import com.alexlatkin.twitchclipsbot.twitchAPI.TwitchVideoClipsService;
-import com.alexlatkin.twitchclipsbot.twitchAPI.UserService;
-import com.alexlatkin.twitchclipsbot.twitchAPI.UserServiceImpl;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import com.alexlatkin.twitchclipsbot.twitchAPI.ClipService;
+import com.alexlatkin.twitchclipsbot.twitchAPI.ClipServiceImpl;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -15,37 +10,10 @@ import java.net.URISyntaxException;
 public class Test1 {
     public static void main(String[] args) throws IOException, InterruptedException, URISyntaxException {
 
-//        TwitchVideoClipsService twitchVideoClipsService = new TwitchVideoClipsService();
-//
-//        VideoClipsController videoClipsController = new VideoClipsController(twitchVideoClipsService);
-//
-//        System.out.println(videoClipsController.getUserId("qsnake"));
-//        System.out.println(videoClipsController.getGameId("Dota 2"));
-//
-//        System.out.println(videoClipsController.getVideoClipsByGameName("Dota 2"));
+        ClipService clipService = new ClipServiceImpl();
 
+        VideoClipsController videoClipsController = new VideoClipsController(clipService);
 
-        UserService userService = new UserServiceImpl();
-
-        VideoClipsController videoClipsController = new VideoClipsController(userService);
-
-        System.out.println(videoClipsController.getUser("mariachi").getDescription());
-
-
-
-
-
-
-
-
-//        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
-
-//        TwitchApiConfig twitchApiConfig = new TwitchApiConfig();
-//
-//        System.out.println(twitchApiConfig);
-
-
-
-
+        System.out.println(videoClipsController.getGameInfo("Dota 2"));
     }
 }

@@ -14,7 +14,7 @@ import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 
 @Service
-public class ClipServiceImpl implements ClipService{
+public class TwitchServiceImpl implements TwitchService {
     private static final String URL = "https://api.twitch.tv/helix/";
     private String path;
     private static final String FIRST_HEADER_NAME = "Authorization";
@@ -24,9 +24,9 @@ public class ClipServiceImpl implements ClipService{
 
     @Override
     public TwitchGameDto getGame(String gameName) throws URISyntaxException, IOException, InterruptedException {
-        path = "games?name=";
+        path = "games?name=" + gameName.replace(" ", "%20");
 
-        var uri = new URI(URL + path + gameName.replace(" ", "%20"));
+        var uri = new URI(URL + path);
 
         var client = HttpClient.newHttpClient();
 
@@ -49,9 +49,9 @@ public class ClipServiceImpl implements ClipService{
 
     @Override
     public TwitchUser getBroadcaster(String broadcasterName) throws URISyntaxException, IOException, InterruptedException {
-        path = "users?login=";
+        path = "users?login=" + broadcasterName;
 
-        var uri = new URI(URL + path + broadcasterName);
+        var uri = new URI(URL + path);
 
         var client = HttpClient.newHttpClient();
 
@@ -73,12 +73,12 @@ public class ClipServiceImpl implements ClipService{
     }
 
     @Override
-    public TwitchClipsDto getClipsByGameName(String gameName) {
+    public TwitchClipsDto getClipsByGameName(String gameName, String date) {
         return null;
     }
 
     @Override
-    public TwitchClipsDto getClipsByBroadcasterName(String broadcasterName) {
+    public TwitchClipsDto getClipsByBroadcasterName(String broadcasterName, String date) {
         return null;
     }
 }

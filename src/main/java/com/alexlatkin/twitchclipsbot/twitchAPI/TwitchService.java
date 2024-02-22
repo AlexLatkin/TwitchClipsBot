@@ -8,9 +8,9 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 
 
-public interface ClipService {
+public interface TwitchService {
     TwitchGameDto getGame(String gameName) throws URISyntaxException, IOException, InterruptedException;
     TwitchUser getBroadcaster(String broadcasterName) throws URISyntaxException, IOException, InterruptedException;
-    TwitchClipsDto getClipsByGameName(String gameName);
-    TwitchClipsDto getClipsByBroadcasterName(String broadcasterName);
+    TwitchClipsDto getClipsByGameName(String gameName, String date);
+    TwitchClipsDto getClipsByBroadcasterName(String broadcasterName, String date);
 }

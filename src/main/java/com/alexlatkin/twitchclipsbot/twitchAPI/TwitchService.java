@@ -11,6 +11,6 @@ import java.net.URISyntaxException;
 public interface TwitchService {
     TwitchGameDto getGame(String gameName) throws URISyntaxException, IOException, InterruptedException;
     TwitchUser getBroadcaster(String broadcasterName) throws URISyntaxException, IOException, InterruptedException;
-    TwitchClipsDto getClipsByGameName(String gameName, String date);
+    TwitchClipsDto getClipsByGameId(int gameId, String date) throws IOException, InterruptedException, URISyntaxException;
     TwitchClipsDto getClipsByBroadcasterName(String broadcasterName, String date);
 }

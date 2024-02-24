@@ -1,9 +1,7 @@
 package com.alexlatkin.twitchclipsbot.controller;
 
-import com.alexlatkin.twitchclipsbot.dto.TwitchClipsDto;
-import com.alexlatkin.twitchclipsbot.dto.TwitchGameDto;
+import com.alexlatkin.twitchclipsbot.model.dto.TwitchClipsDto;
 import com.alexlatkin.twitchclipsbot.service.ClipService;
-import com.alexlatkin.twitchclipsbot.twitchAPI.TwitchService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RestController;
 

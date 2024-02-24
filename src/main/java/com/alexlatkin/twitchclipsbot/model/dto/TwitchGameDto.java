@@ -1,4 +1,4 @@
-package com.alexlatkin.twitchclipsbot.dto;
+package com.alexlatkin.twitchclipsbot.model.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;

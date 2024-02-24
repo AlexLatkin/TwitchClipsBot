@@ -1,7 +1,7 @@
 package com.alexlatkin.twitchclipsbot;
 
 import com.alexlatkin.twitchclipsbot.controller.VideoClipsController;
-import com.alexlatkin.twitchclipsbot.model.TwitchClip;
+import com.alexlatkin.twitchclipsbot.model.dto.TwitchClip;
 import com.alexlatkin.twitchclipsbot.service.ClipService;
 import com.alexlatkin.twitchclipsbot.service.ClipServiceImpl;
 import com.alexlatkin.twitchclipsbot.twitchAPI.TwitchService;

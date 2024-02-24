@@ -1,6 +1,6 @@
 package com.alexlatkin.twitchclipsbot.twitchAPI;
 
-import com.alexlatkin.twitchclipsbot.dto.*;
+import com.alexlatkin.twitchclipsbot.model.dto.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Service;
 

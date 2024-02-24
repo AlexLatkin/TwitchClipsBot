@@ -1,8 +1,6 @@
 package com.alexlatkin.twitchclipsbot.service;
 
-import com.alexlatkin.twitchclipsbot.dto.TwitchClipsDto;
-import com.alexlatkin.twitchclipsbot.dto.TwitchGameDto;
-import org.springframework.stereotype.Service;
+import com.alexlatkin.twitchclipsbot.model.dto.TwitchClipsDto;
 
 import java.io.IOException;
 import java.net.URISyntaxException;

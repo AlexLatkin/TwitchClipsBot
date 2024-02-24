@@ -1,8 +1,8 @@
 package com.alexlatkin.twitchclipsbot.twitchAPI;
 
-import com.alexlatkin.twitchclipsbot.dto.TwitchClipsDto;
-import com.alexlatkin.twitchclipsbot.dto.TwitchGameDto;
-import com.alexlatkin.twitchclipsbot.dto.TwitchUser;
+import com.alexlatkin.twitchclipsbot.model.dto.TwitchClipsDto;
+import com.alexlatkin.twitchclipsbot.model.dto.TwitchGameDto;
+import com.alexlatkin.twitchclipsbot.model.dto.TwitchUser;
 
 import java.io.IOException;
 import java.net.URISyntaxException;

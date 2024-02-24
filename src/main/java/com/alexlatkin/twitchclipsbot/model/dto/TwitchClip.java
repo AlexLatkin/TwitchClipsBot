@@ -1,4 +1,4 @@
-package com.alexlatkin.twitchclipsbot.model;
+package com.alexlatkin.twitchclipsbot.model.dto;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;

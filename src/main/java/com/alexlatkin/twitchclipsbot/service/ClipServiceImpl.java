@@ -1,8 +1,7 @@
 package com.alexlatkin.twitchclipsbot.service;
 
-import com.alexlatkin.twitchclipsbot.dto.TwitchClipsDto;
+import com.alexlatkin.twitchclipsbot.model.dto.TwitchClipsDto;
 import com.alexlatkin.twitchclipsbot.twitchAPI.TwitchService;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

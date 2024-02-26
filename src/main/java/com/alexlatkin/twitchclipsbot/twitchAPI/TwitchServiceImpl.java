@@ -100,7 +100,37 @@ public class TwitchServiceImpl implements TwitchService {
     }
 
     @Override
-    public TwitchClipsDto getClipsByBroadcasterName(String broadcasterName, String date) {
+    public TwitchClipsDto getClipsByBroadcasterName(int broadcasterId, String date) {
+
+
+
         return null;
+    }
+
+    @Override
+    public TwitchClipsDto getClipsByBroadcasterNameTest(int broadcasterId, String date) throws URISyntaxException, IOException, InterruptedException {
+        String clipDate = date + "T00:00:00%2B03:00";
+
+        path ="clips?id=" + broadcasterId + "&started_at=" + clipDate;
+
+        var uri = new URI(URL + path);
+
+        var client = HttpClient.newHttpClient();
+
+        var request = HttpRequest.newBuilder()
+                .GET()
+                .uri(uri)
+                .header(FIRST_HEADER_NAME, FIRST_HEADER_VALUE)
+                .header(SECOND_HEADER_NAME, SECOND_HEADER_VALUE)
+                .timeout(Duration.ofSeconds(20))
+                .build();
+
+        var response = client.send(request, HttpResponse.BodyHandlers.ofString(StandardCharsets.UTF_8));
+
+        ObjectMapper mapper = new ObjectMapper();
+
+        TwitchClipsDto twitchClipsDto = mapper.readValue(response.body(), TwitchClipsDto.class);
+
+        return twitchClipsDto;
     }
 }

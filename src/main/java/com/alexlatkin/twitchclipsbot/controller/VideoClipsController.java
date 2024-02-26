@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.List;
 
 
 @RestController
@@ -16,5 +17,9 @@ public class VideoClipsController {
 
     public TwitchClipsDto getClipsByGameName(String gameName) throws URISyntaxException, IOException, InterruptedException {
         return clipService.getClipsByGameName(gameName);
+    }
+
+    public List<TwitchClipsDto> getClipsByBroadcasterName() {
+        return clipService.getClipsByBroadcasterNameTest();
     }
 }

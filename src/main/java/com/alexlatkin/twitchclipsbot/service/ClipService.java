@@ -11,6 +11,6 @@ public interface ClipService {
     TwitchClipsDto getClipsByGameName(String gameName) throws URISyntaxException, IOException, InterruptedException;
     TwitchClipsDto getClipsByBroadcasterName(String broadcasterName);
 
-    List<TwitchClipsDto> getClipsByBroadcasterNameTest();
+    List<TwitchClipsDto> getClipsByBroadcasterNameTest() throws URISyntaxException, IOException, InterruptedException;
 
 }

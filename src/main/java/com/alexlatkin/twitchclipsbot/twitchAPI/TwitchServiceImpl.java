@@ -2,6 +2,7 @@ package com.alexlatkin.twitchclipsbot.twitchAPI;
 
 import com.alexlatkin.twitchclipsbot.model.dto.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -111,7 +112,7 @@ public class TwitchServiceImpl implements TwitchService {
     public TwitchClipsDto getClipsByBroadcasterNameTest(int broadcasterId, String date) throws URISyntaxException, IOException, InterruptedException {
         String clipDate = date + "T00:00:00%2B03:00";
 
-        path ="clips?id=" + broadcasterId + "&started_at=" + clipDate;
+        path ="clips?broadcaster_id=" + broadcasterId + "&started_at=" + clipDate;
 
         var uri = new URI(URL + path);
 

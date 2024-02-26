@@ -3,7 +3,6 @@ package com.alexlatkin.twitchclipsbot.service;
 import com.alexlatkin.twitchclipsbot.model.dto.TwitchClipsDto;
 import com.alexlatkin.twitchclipsbot.twitchAPI.TwitchService;
 import lombok.RequiredArgsConstructor;
-import net.bytebuddy.asm.Advice;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -42,38 +41,19 @@ public class ClipServiceImpl implements ClipService {
     }
 
     @Override
-    public List<TwitchClipsDto> getClipsByBroadcasterNameTest() {
+    public List<TwitchClipsDto> getClipsByBroadcasterNameTest() throws URISyntaxException, IOException, InterruptedException {
         LocalDate localDate = LocalDate.now();
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         String date = localDate.format(dateTimeFormatter);
 
-        List<Integer> broadcasterId = new ArrayList<>();
-        broadcasterId.add(40594834);
-        broadcasterId.add(72556476);
-        broadcasterId.add(34932688);
-        broadcasterId.add(72556476);
-        broadcasterId.add(72556476);
-        broadcasterId.add(44335356);
-        broadcasterId.add(676585166);
-        broadcasterId.add(108268890);
-        broadcasterId.add(108268890);
-        broadcasterId.add(128430795);
-        broadcasterId.add(108268890);
-        broadcasterId.add(108268890);
-        broadcasterId.add(49440419);
-        broadcasterId.add(49440419);
-        broadcasterId.add(450012016);
-        broadcasterId.add(108268890);
-        broadcasterId.add(676585166);
-        broadcasterId.add(21379187);
-        broadcasterId.add(128430795);
-        broadcasterId.add(40754777);
+        var broadcasterId = twitchService.getBroadcaster("qsnake").getId();
+        var broadcasterId2 = twitchService.getBroadcaster("madarapoe").getId();
 
+        List<Integer> list = new ArrayList<>();
+        list.add(broadcasterId);
+        list.add(broadcasterId2);
 
-        long startTime = System.nanoTime();
-
-
-        List<TwitchClipsDto> list = broadcasterId.stream().map(e -> {
+        List<TwitchClipsDto> twitchClipsDtos = list.stream().map(e -> {
             try {
                 return twitchService.getClipsByBroadcasterNameTest(e, date);
             } catch (URISyntaxException ex) {
@@ -85,11 +65,7 @@ public class ClipServiceImpl implements ClipService {
             }
         }).collect(Collectors.toList());
 
-        long endTime = System.nanoTime();
-        long duration = (endTime - startTime);
 
-        System.out.println(duration);
-
-        return list;
+        return twitchClipsDtos;
     }
 }

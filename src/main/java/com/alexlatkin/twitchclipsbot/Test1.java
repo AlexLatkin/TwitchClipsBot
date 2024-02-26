@@ -24,18 +24,18 @@ public class Test1 {
 
         List<TwitchClip> twitchClipList = videoClipsController.getClipsByGameName("Dota 2").getData();
 
-//        int sum = 0;
-//
+        int sum = 0;
+
 //        for (TwitchClip twitchClip: twitchClipList) {
 //            System.out.println(twitchClip);
 //            sum++;
 //            System.out.println(twitchClip.getView_count());
 //        }
-//
+
 //        System.out.println(sum);
 
         List<TwitchClipsDto> twitchClips2 = videoClipsController.getClipsByBroadcasterName();
 
-        System.out.println(twitchClips2);
+        System.out.println(twitchClips2.get(0).getData().get(0).getUrl());
     }
 }

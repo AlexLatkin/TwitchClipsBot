@@ -19,7 +19,7 @@ public class VideoClipsController {
         return clipService.getClipsByGameName(gameName);
     }
 
-    public List<TwitchClipsDto> getClipsByBroadcasterName() {
+    public List<TwitchClipsDto> getClipsByBroadcasterName() throws URISyntaxException, IOException, InterruptedException {
         return clipService.getClipsByBroadcasterNameTest();
     }
 }

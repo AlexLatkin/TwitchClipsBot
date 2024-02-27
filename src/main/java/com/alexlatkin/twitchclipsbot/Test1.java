@@ -26,16 +26,18 @@ public class Test1 {
 
         int sum = 0;
 
-//        for (TwitchClip twitchClip: twitchClipList) {
-//            System.out.println(twitchClip);
-//            sum++;
-//            System.out.println(twitchClip.getView_count());
-//        }
+        for (TwitchClip twitchClip: twitchClipList) {
+            System.out.println(twitchClip);
+            sum++;
+            System.out.println(twitchClip.getView_count());
+        }
 
-//        System.out.println(sum);
+        System.out.println(sum);
 
-        List<TwitchClipsDto> twitchClips2 = videoClipsController.getClipsByBroadcasterName();
-
-        System.out.println(twitchClips2.get(0).getData().get(0).getUrl());
+//
+//        List<TwitchClipsDto> twitchClips2 = videoClipsController.getClipsByBroadcasterName();
+//
+//        System.out.println(twitchClips2.get(0).getData().get(0).getUrl());
     }
 }
+

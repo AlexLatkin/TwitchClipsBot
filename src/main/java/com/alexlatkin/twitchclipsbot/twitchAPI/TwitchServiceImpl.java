@@ -1,6 +1,7 @@
 package com.alexlatkin.twitchclipsbot.twitchAPI;
 
 import com.alexlatkin.twitchclipsbot.model.dto.*;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
@@ -13,6 +14,8 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 
 @Service
 public class TwitchServiceImpl implements TwitchService {
@@ -101,11 +104,30 @@ public class TwitchServiceImpl implements TwitchService {
     }
 
     @Override
-    public TwitchClipsDto getClipsByBroadcasterName(int broadcasterId, String date) {
+    @Async
+    public CompletableFuture<String> getClipsByBroadcasterName(int broadcasterId, String date) throws ExecutionException, InterruptedException, JsonProcessingException, URISyntaxException {
+        String clipDate = date + "T00:00:00%2B03:00";
 
+        path ="clips?broadcaster_id=" + broadcasterId + "&started_at=" + clipDate;
 
+        var uri = new URI(URL + path);
 
-        return null;
+        var client = HttpClient.newHttpClient();
+
+        var request = HttpRequest.newBuilder()
+                .GET()
+                .uri(uri)
+                .header(FIRST_HEADER_NAME, FIRST_HEADER_VALUE)
+                .header(SECOND_HEADER_NAME, SECOND_HEADER_VALUE)
+                .timeout(Duration.ofSeconds(20))
+                .build();
+
+        var response = client.sendAsync(request, HttpResponse.BodyHandlers.ofString(StandardCharsets.UTF_8))
+                .thenApply(HttpResponse::body);
+
+        response.join();
+
+        return response;
     }
 
     @Override

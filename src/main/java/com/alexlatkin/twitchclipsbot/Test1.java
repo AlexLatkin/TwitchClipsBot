@@ -11,10 +11,12 @@ import com.alexlatkin.twitchclipsbot.twitchAPI.TwitchServiceImpl;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 
 public class Test1 {
-    public static void main(String[] args) throws IOException, InterruptedException, URISyntaxException {
+    public static void main(String[] args) throws IOException, InterruptedException, URISyntaxException, ExecutionException {
 
         TwitchService twitchService = new TwitchServiceImpl();
 
@@ -24,20 +26,34 @@ public class Test1 {
 
         List<TwitchClip> twitchClipList = videoClipsController.getClipsByGameName("Dota 2").getData();
 
-        int sum = 0;
-
-        for (TwitchClip twitchClip: twitchClipList) {
-            System.out.println(twitchClip);
-            sum++;
-            System.out.println(twitchClip.getView_count());
-        }
-
-        System.out.println(sum);
-
+//        int sum = 0;
 //
-//        List<TwitchClipsDto> twitchClips2 = videoClipsController.getClipsByBroadcasterName();
+//        for (TwitchClip twitchClip: twitchClipList) {
+//            System.out.println(twitchClip);
+//            sum++;
+//            System.out.println(twitchClip.getView_count());
+//        }
 //
-//        System.out.println(twitchClips2.get(0).getData().get(0).getUrl());
+//        System.out.println(sum);
+
+
+        List<TwitchClipsDto> twitchClips2 = videoClipsController.getClipsByBroadcasterName();
+
+        System.out.println(twitchClips2.get(11).getData());
+
+        List<CompletableFuture<String>> sdad = videoClipsController.getClipsByBroadcasterNameV2();
+
+
+
+        System.out.println(sdad.get(11).get());
+//
+//
+//
+//        long endTime = System.nanoTime();
+//
+//        long duration = (endTime - startTime);
+//
+//        System.out.println(duration);
     }
 }
 

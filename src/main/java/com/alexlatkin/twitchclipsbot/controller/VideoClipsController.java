@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.RestController;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 
 
 @RestController
@@ -21,5 +23,11 @@ public class VideoClipsController {
 
     public List<TwitchClipsDto> getClipsByBroadcasterName() throws URISyntaxException, IOException, InterruptedException {
         return clipService.getClipsByBroadcasterNameTest();
+    }
+
+
+
+    public List<CompletableFuture<String>> getClipsByBroadcasterNameV2() throws URISyntaxException, IOException, ExecutionException, InterruptedException {
+        return clipService.getClipsByBroadcasterName();
     }
 }

@@ -1,10 +1,9 @@
 package com.alexlatkin.twitchclipsbot.service;
 
+import com.alexlatkin.twitchclipsbot.model.dto.TwitchClip;
 import com.alexlatkin.twitchclipsbot.model.dto.TwitchClipsDto;
 import com.alexlatkin.twitchclipsbot.twitchAPI.TwitchService;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import kotlin.jvm.internal.TypeReference;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -14,7 +13,6 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
@@ -36,7 +34,7 @@ public class ClipServiceImpl implements ClipService {
     }
 
     @Override
-    public TwitchClipsDto getClipsByBroadcasterName(String broadcasterName) throws URISyntaxException, IOException, InterruptedException, ExecutionException {
+    public List<CompletableFuture<String>> getClipsByBroadcasterName() throws URISyntaxException, IOException, InterruptedException, ExecutionException {
         LocalDate localDate = LocalDate.now();
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         String date = localDate.format(dateTimeFormatter);
@@ -66,10 +64,14 @@ public class ClipServiceImpl implements ClipService {
         list.add(broadcasterId2);
         list.add(broadcasterId2);
 
+        List<CompletableFuture<String>> allClips = new ArrayList<>();
 
-        List<CompletableFuture<String>> allClips = list.stream().map(bc -> {
+        long startTime = System.nanoTime();
+
+
+        list.stream().forEach(bcID -> {
             try {
-                return twitchService.getClipsByBroadcasterName(bc, date);
+                allClips.add(twitchService.getClipsByBroadcasterName(bcID, date));
             } catch (ExecutionException e) {
                 throw new RuntimeException(e);
             } catch (InterruptedException e) {
@@ -79,20 +81,19 @@ public class ClipServiceImpl implements ClipService {
             } catch (URISyntaxException e) {
                 throw new RuntimeException(e);
             }
-        }).collect(Collectors.toList());
-
-        allClips.stream().map(CompletableFuture::join);
+        });
 
 
-        allClips.get(0).get();
+        long endTime = System.nanoTime();
+
+        long duration = (endTime - startTime);
+
+        System.out.println(duration);
 
 
-        ObjectMapper mapper = new ObjectMapper();
+        CompletableFuture.allOf(allClips.toArray(new CompletableFuture[0])).get();
 
-        TwitchClipsDto twitchClipsDto;
-
-
-        return twitchClipsDto;
+        return allClips;
     }
 
     @Override

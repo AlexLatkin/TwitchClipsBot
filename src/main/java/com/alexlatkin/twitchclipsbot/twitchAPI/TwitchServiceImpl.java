@@ -125,8 +125,6 @@ public class TwitchServiceImpl implements TwitchService {
         var response = client.sendAsync(request, HttpResponse.BodyHandlers.ofString(StandardCharsets.UTF_8))
                 .thenApply(HttpResponse::body);
 
-        response.join();
-
         return response;
     }
 

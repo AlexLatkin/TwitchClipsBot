@@ -4,5 +4,7 @@ import lombok.Data;
 
 @Data
 public class FavoriteList {
+
+    private String broadcasterName;
     private int broadcasterId;
 }

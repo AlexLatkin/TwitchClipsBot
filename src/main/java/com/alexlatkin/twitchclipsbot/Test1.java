@@ -39,13 +39,13 @@ public class Test1 {
 
         List<TwitchClipsDto> twitchClips2 = videoClipsController.getClipsByBroadcasterName();
 
-        System.out.println(twitchClips2.get(11).getData());
+        System.out.println(twitchClips2.get(0).getData());
 
         List<CompletableFuture<String>> sdad = videoClipsController.getClipsByBroadcasterNameV2();
 
 
 
-        System.out.println(sdad.get(11).get());
+        System.out.println(sdad.get(0).get());
 //
 //
 //

@@ -41,9 +41,10 @@ public class ClipServiceImpl implements ClipService {
 
         var broadcasterId = twitchService.getBroadcaster("qsnake").getId();
         var broadcasterId2 = twitchService.getBroadcaster("madarapoe").getId();
+        var broadcasterId3 = twitchService.getBroadcaster("mariachi").getId();
 
         List<Integer> list = new ArrayList<>();
-        list.add(broadcasterId);
+        list.add(broadcasterId3);
         list.add(broadcasterId2);
         list.add(broadcasterId2);
         list.add(broadcasterId2);
@@ -104,9 +105,10 @@ public class ClipServiceImpl implements ClipService {
 
         var broadcasterId = twitchService.getBroadcaster("qsnake").getId();
         var broadcasterId2 = twitchService.getBroadcaster("madarapoe").getId();
+        var broadcasterId3 = twitchService.getBroadcaster("mariachi").getId();
 
         List<Integer> list = new ArrayList<>();
-        list.add(broadcasterId);
+        list.add(broadcasterId3);
         list.add(broadcasterId2);
         list.add(broadcasterId2);
         list.add(broadcasterId2);

@@ -1,6 +1,6 @@
 package com.alexlatkin.twitchclipsbot;
 
-import com.alexlatkin.twitchclipsbot.controller.VideoClipsController;
+import com.alexlatkin.twitchclipsbot.controller.ClipsController;
 import com.alexlatkin.twitchclipsbot.model.dto.TwitchClip;
 import com.alexlatkin.twitchclipsbot.model.dto.TwitchClipsDto;
 import com.alexlatkin.twitchclipsbot.service.ClipService;
@@ -13,7 +13,6 @@ import java.net.URISyntaxException;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
-import java.util.stream.Collectors;
 
 public class Test1 {
     public static void main(String[] args) throws IOException, InterruptedException, URISyntaxException, ExecutionException {
@@ -22,9 +21,9 @@ public class Test1 {
 
         ClipService clipService = new ClipServiceImpl(twitchService);
 
-        VideoClipsController videoClipsController = new VideoClipsController(clipService);
+        ClipsController clipsController = new ClipsController(clipService);
 
-        List<TwitchClip> twitchClipList = videoClipsController.getClipsByGameName("Dota 2").getData();
+        List<TwitchClip> twitchClipList = clipsController.getClipsByGameName("Dota 2").getData();
 
 //        int sum = 0;
 //
@@ -37,11 +36,11 @@ public class Test1 {
 //        System.out.println(sum);
 
 
-        List<TwitchClipsDto> twitchClips2 = videoClipsController.getClipsByBroadcasterName();
+        List<TwitchClipsDto> twitchClips2 = clipsController.getClipsByBroadcasterName();
 
         System.out.println(twitchClips2.get(0).getData());
 
-        List<CompletableFuture<String>> sdad = videoClipsController.getClipsByBroadcasterNameV2();
+        List<CompletableFuture<String>> sdad = clipsController.getClipsByBroadcasterNameV2();
 
 
 

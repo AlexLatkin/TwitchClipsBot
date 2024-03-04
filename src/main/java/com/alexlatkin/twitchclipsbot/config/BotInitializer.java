@@ -3,7 +3,6 @@ package com.alexlatkin.twitchclipsbot.config;
 
 import com.alexlatkin.twitchclipsbot.controller.TelegramBot;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
@@ -19,9 +18,7 @@ public class BotInitializer {
     @EventListener({ContextRefreshedEvent.class})
     public void init() throws TelegramApiException {
         TelegramBotsApi telegramBotsApi = new TelegramBotsApi(DefaultBotSession.class);
-
         telegramBotsApi.registerBot(telegramBot);
-
     }
 
 }

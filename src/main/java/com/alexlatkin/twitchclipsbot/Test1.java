@@ -17,13 +17,13 @@ import java.util.concurrent.ExecutionException;
 public class Test1 {
     public static void main(String[] args) throws IOException, InterruptedException, URISyntaxException, ExecutionException {
 
-        TwitchService twitchService = new TwitchServiceImpl();
-
-        ClipService clipService = new ClipServiceImpl(twitchService);
-
-        ClipsController clipsController = new ClipsController(clipService);
-
-        List<TwitchClip> twitchClipList = clipsController.getClipsByGameName("Dota 2").getData();
+//        TwitchService twitchService = new TwitchServiceImpl();
+//
+//        ClipService clipService = new ClipServiceImpl(twitchService);
+//
+//        ClipsController clipsController = new ClipsController(clipService);
+//
+//        List<TwitchClip> twitchClipList = clipsController.getClipsByGameName("Dota 2").getData();
 
 //        int sum = 0;
 //
@@ -36,15 +36,15 @@ public class Test1 {
 //        System.out.println(sum);
 
 
-        List<TwitchClipsDto> twitchClips2 = clipsController.getClipsByBroadcasterName();
-
-        System.out.println(twitchClips2.get(0).getData());
-
-        List<CompletableFuture<String>> sdad = clipsController.getClipsByBroadcasterNameV2();
-
-
-
-        System.out.println(sdad.get(0).get());
+//        List<TwitchClipsDto> twitchClips2 = clipsController.getClipsByBroadcasterName();
+//
+//        System.out.println(twitchClips2.get(0).getData());
+//
+//        List<CompletableFuture<String>> sdad = clipsController.getClipsByBroadcasterNameV2();
+//
+//
+//
+//        System.out.println(sdad.get(0).get());
 //
 //
 //

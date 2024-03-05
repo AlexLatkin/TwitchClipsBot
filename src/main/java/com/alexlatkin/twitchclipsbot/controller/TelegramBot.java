@@ -4,6 +4,7 @@ import com.alexlatkin.twitchclipsbot.config.BotConfig;
 import com.alexlatkin.twitchclipsbot.service.ClipService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.RestController;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
@@ -14,12 +15,11 @@ import java.net.URISyntaxException;
 
 @Component
 @AllArgsConstructor
+@RestController
 public class TelegramBot extends TelegramLongPollingBot {
 
     final BotConfig botConfig;
-//    final ClipsController clipsController;
-
-    final ClipService clipService;
+    final ClipsController clipsController;
 
     @Override
     public String getBotUsername() {
@@ -34,60 +34,34 @@ public class TelegramBot extends TelegramLongPollingBot {
     @Override
     public void onUpdateReceived(Update update) {
 
-            var message = update.getMessage();
+            var userMessageText = update.getMessage().getText();
 
             var response = new SendMessage();
 
-            response.setChatId(message.getChatId().toString());
+            response.setChatId(update.getMessage().getChatId().toString());
 
-            if (message.getText().contains("/game_clips")) {
-                var gameName = message.getText().substring(11);
+            if(userMessageText.contains("/start")) {
+                response.setText("Start command");
 
-                String clips = null;
-                try {
-                    clips = clipService.getClipsByGameName(gameName).getData().get(0).getUrl();
-                } catch (URISyntaxException e) {
-                    throw new RuntimeException(e);
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
+                sendAnswerMessage(response);
+            }
+
+            if(userMessageText.contains("/help")) {
+            response.setText("Help command");
+
+            sendAnswerMessage(response);
+            }
+
+            if (userMessageText.contains("/game_clips")) {
+
+                var gameName = userMessageText.substring(12);
+
+                String clips = getClipsByGameName(gameName);
 
                 response.setText(clips);
 
                 sendAnswerMessage(response);
             }
-
-
-
-
-            switch (message.getText()) {
-                case "/start":
-                            response.setText("Hello");
-                            sendAnswerMessage(response);
-                            break;
-                case "/help":
-                            response.setText("some text");
-                            sendAnswerMessage(response);
-                            break;
-//                case "/game_clips":
-//                    try {
-//                        response.setText(clipsController.getClipsByGameName(update.getMessage().getText()).getData().get(0).getUrl());
-//                    } catch (URISyntaxException e) {
-//                        throw new RuntimeException(e);
-//                    } catch (IOException e) {
-//                        throw new RuntimeException(e);
-//                    } catch (InterruptedException e) {
-//                        throw new RuntimeException(e);
-//                    }
-//                    sendAnswerMessage(response);
-//                            break;
-                default:
-                            response.setText("Команда не поддерживается");
-                            sendAnswerMessage(response);
-            }
-
 
 
     }
@@ -101,8 +75,17 @@ public class TelegramBot extends TelegramLongPollingBot {
         }
     }
 
-
-
+    private String getClipsByGameName(String gameName) {
+        try {
+            return clipsController.getClipsByGameName(gameName).getData().get(0).getUrl();
+        } catch (URISyntaxException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
 
 }

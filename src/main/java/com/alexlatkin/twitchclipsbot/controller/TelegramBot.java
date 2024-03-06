@@ -1,25 +1,29 @@
 package com.alexlatkin.twitchclipsbot.controller;
 
 import com.alexlatkin.twitchclipsbot.config.BotConfig;
-import com.alexlatkin.twitchclipsbot.service.ClipService;
+import com.alexlatkin.twitchclipsbot.model.repository.UserRepository;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.RestController;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
 
-@Component
+@Getter
+@Setter
 @AllArgsConstructor
-@RestController
+@Component
 public class TelegramBot extends TelegramLongPollingBot {
 
     final BotConfig botConfig;
     final ClipsController clipsController;
+    final UserRepository userRepository;
 
     @Override
     public String getBotUsername() {
@@ -47,9 +51,9 @@ public class TelegramBot extends TelegramLongPollingBot {
             }
 
             if(userMessageText.contains("/help")) {
-            response.setText("Help command");
+                response.setText("Help command");
 
-            sendAnswerMessage(response);
+                sendAnswerMessage(response);
             }
 
             if (userMessageText.contains("/game_clips")) {
@@ -73,6 +77,16 @@ public class TelegramBot extends TelegramLongPollingBot {
         } catch (TelegramApiException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private void registerUser(Message message) {
+
+        userRepository.findById(message.getChatId());
+
+        message.getChat();
+
+        message.getChatId();
+
     }
 
     private String getClipsByGameName(String gameName) {

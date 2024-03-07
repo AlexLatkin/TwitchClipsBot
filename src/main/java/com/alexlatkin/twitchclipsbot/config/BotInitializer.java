@@ -1,9 +1,9 @@
 package com.alexlatkin.twitchclipsbot.config;
 
 
+import com.alexlatkin.twitchclipsbot.controller.ClipsController;
 import com.alexlatkin.twitchclipsbot.controller.TelegramBot;
-import com.alexlatkin.twitchclipsbot.telegramBotCommands.BotCommands;
-import com.alexlatkin.twitchclipsbot.telegramBotCommands.RegisterCommand;
+import com.alexlatkin.twitchclipsbot.telegramBotCommands.*;
 import lombok.AllArgsConstructor;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.EventListener;
@@ -19,12 +19,16 @@ import java.util.Map;
 public class BotInitializer {
     final TelegramBot telegramBot;
     final BotConfig botConfig;
+    final ClipsController clipsController;
 
     @EventListener({ContextRefreshedEvent.class})
     public void init() throws TelegramApiException {
         TelegramBotsApi telegramBotsApi = new TelegramBotsApi(DefaultBotSession.class);
 
-        Map<String, BotCommands> commands = Map.of("/start", new RegisterCommand());
+        Map<String, BotCommands> commands = Map.of("/start", new RegisterCommand()
+                                                , "/help", new HelpCommand()
+                                                , "/game_clips", new GameClipsCommand(clipsController)
+                                                , "/caster_clips", new BroadcasterClipsCommand(clipsController));
 
         botConfig.setCommands(commands);
         telegramBotsApi.registerBot(telegramBot);

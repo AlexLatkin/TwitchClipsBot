@@ -25,10 +25,15 @@ public class BotInitializer {
     public void init() throws TelegramApiException {
         TelegramBotsApi telegramBotsApi = new TelegramBotsApi(DefaultBotSession.class);
 
+        Map<String, String> buttons = Map.of("FOLLOW", " ", "BLOCK", " ");
+
         Map<String, BotCommands> commands = Map.of("/start", new RegisterCommand()
-                                                , "/help", new HelpCommand()
-                                                , "/game_clips", new GameClipsCommand(clipsController)
-                                                , "/caster_clips", new BroadcasterClipsCommand(clipsController));
+                                                    ,"/help", new HelpCommand()
+                                                    ,"/game_clips", new GameClipsCommand(clipsController)
+                                                    ,"/caster_clips", new CasterClipsCommand(clipsController)
+                                                    ,"/follow_list_clips", new FollowListClipsCommand()
+                                                    ,"/follow_list", new FollowListCommand()
+                                                    ,"/black_list", new BlackListCommand());
 
         botConfig.setCommands(commands);
         telegramBotsApi.registerBot(telegramBot);

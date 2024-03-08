@@ -18,4 +18,5 @@ public class BotConfig {
     @Value("${bot.token}")
     private String token;
     private Map<String, BotCommands> commands;
+    private Map<String, String> buttons;
 }

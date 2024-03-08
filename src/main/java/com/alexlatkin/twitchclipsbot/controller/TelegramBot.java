@@ -8,11 +8,10 @@ import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
-import java.io.IOException;
-import java.net.URISyntaxException;
 import java.util.Map;
 
 @Getter
@@ -46,11 +45,11 @@ public class TelegramBot extends TelegramLongPollingBot {
                 chatIdAndUserMessage.put(chatId, userMessageText);
                 sendAnswerMessage(response);
 
-
             } else if (chatIdAndUserMessage.containsKey(chatId)) {
                 var response = botConfig.getCommands().get(chatIdAndUserMessage.get(chatId)).secondMessage(update);
                 chatIdAndUserMessage.remove(chatId);
                 sendAnswerMessage(response);
+
             } else {
                 var response = new SendMessage();
                 response.setChatId(chatId);
@@ -60,6 +59,32 @@ public class TelegramBot extends TelegramLongPollingBot {
 
         } else if (update.hasCallbackQuery()) {
 
+            var chatId = update.getCallbackQuery().getMessage().getChatId();
+
+            if (update.getCallbackQuery().getData().equals("NEXT")) {
+
+
+
+
+            } else if (update.getCallbackQuery().getData().equals("BLOCK")) {
+
+                EditMessageText response = new EditMessageText();
+                response.setChatId(chatId);
+                response.setText(update.getCallbackQuery().getMessage().getText() + "\n Добавлен в черный список");
+                response.setMessageId(update.getCallbackQuery().getMessage().getMessageId());
+                
+                sendAnswerMessage(response);
+
+            } else if (update.getCallbackQuery().getData().equals("FOLLOW")) {
+
+                EditMessageText response = new EditMessageText();
+                response.setChatId(chatId);
+                response.setText(update.getCallbackQuery().getMessage().getText() + "\n Отслеживается");
+                response.setMessageId(update.getCallbackQuery().getMessage().getMessageId());
+
+                sendAnswerMessage(response);
+            }
+
         }
 
     }
@@ -68,18 +93,6 @@ public class TelegramBot extends TelegramLongPollingBot {
         try {
             execute(message);
         } catch (TelegramApiException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    private String getClipsByGameName(String gameName) {
-        try {
-            return clipsController.getClipsByGameName(gameName).getData().get(0).getUrl();
-        } catch (URISyntaxException e) {
-            throw new RuntimeException(e);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
     }

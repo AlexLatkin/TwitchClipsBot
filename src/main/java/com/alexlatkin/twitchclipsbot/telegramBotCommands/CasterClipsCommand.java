@@ -9,7 +9,7 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 
 @NoArgsConstructor
 @AllArgsConstructor
-public class BroadcasterClipsCommand implements BotCommands {
+public class CasterClipsCommand implements BotCommands {
 
     ClipsController clipsController;
     @Override
@@ -26,7 +26,7 @@ public class BroadcasterClipsCommand implements BotCommands {
 
         String clipUrl;
 
-         clipUrl = clipsController.getClipsByBroadcasterName(broadcasterName).get(0).getData().get(0).getUrl();
+//         clipUrl = clipsController.getClipsByBroadcasterName().get(0).getData().get(0).getUrl();
 
 
         return null;

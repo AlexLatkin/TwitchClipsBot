@@ -60,33 +60,25 @@ public class TelegramBot extends TelegramLongPollingBot {
         } else if (update.hasCallbackQuery()) {
 
             var chatId = update.getCallbackQuery().getMessage().getChatId();
+            var buttonKey = update.getCallbackQuery().getData();
 
-            if (update.getCallbackQuery().getData().equals("NEXT")) {
+            if (botConfig.getButtonCommands().containsKey(buttonKey)) {
 
+                if (buttonKey.equals("NEXT")) {
+                    var response = new SendMessage();
+                    response.setChatId(chatId);
+                    response.setText(botConfig.getButtonCommands().get(buttonKey).actionButtonWithNextMessage(update));
+                    sendAnswerMessage(response);
 
-
-
-            } else if (update.getCallbackQuery().getData().equals("BLOCK")) {
-
-                EditMessageText response = new EditMessageText();
-                response.setChatId(chatId);
-                response.setText(update.getCallbackQuery().getMessage().getText() + "\n Добавлен в черный список");
-                response.setMessageId(update.getCallbackQuery().getMessage().getMessageId());
-                
-                sendAnswerMessage(response);
-
-            } else if (update.getCallbackQuery().getData().equals("FOLLOW")) {
-
-                EditMessageText response = new EditMessageText();
-                response.setChatId(chatId);
-                response.setText(update.getCallbackQuery().getMessage().getText() + "\n Отслеживается");
-                response.setMessageId(update.getCallbackQuery().getMessage().getMessageId());
-
-                sendAnswerMessage(response);
+                } else {
+                    EditMessageText responseInCurrentMessage = new EditMessageText();
+                    responseInCurrentMessage.setChatId(chatId);
+                    responseInCurrentMessage.setMessageId(update.getCallbackQuery().getMessage().getMessageId());
+                    responseInCurrentMessage.setText(botConfig.getButtonCommands().get(buttonKey).actionButtonInCurrentMessage(update));
+                    sendAnswerMessage(responseInCurrentMessage);
+                }
             }
-
         }
-
     }
 
     private void sendAnswerMessage(BotApiMethod message) {

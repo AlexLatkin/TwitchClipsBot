@@ -1,5 +1,6 @@
-package com.alexlatkin.twitchclipsbot.telegramBotCommands;
+package com.alexlatkin.twitchclipsbot.telegramBotCommands.textCommands;
 
+import com.alexlatkin.twitchclipsbot.config.BotConfig;
 import com.alexlatkin.twitchclipsbot.controller.ClipsController;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -48,12 +49,12 @@ public class GameClipsCommand implements BotCommands {
 
         var msg = new SendMessage(chatId, clipUrl);
 
-        msg.setReplyMarkup(gameClipsButtons(casterName));
+        msg.setReplyMarkup(gameClipsCommandKeyboard(casterName));
 
         return msg;
     }
 
-    public InlineKeyboardMarkup gameClipsButtons(String casterName) {
+    public InlineKeyboardMarkup gameClipsCommandKeyboard(String casterName) {
 
         InlineKeyboardMarkup markupInLine = new InlineKeyboardMarkup();
         List<List<InlineKeyboardButton>> keyBoard = new ArrayList<>();

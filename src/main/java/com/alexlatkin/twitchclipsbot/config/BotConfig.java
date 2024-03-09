@@ -1,7 +1,8 @@
 package com.alexlatkin.twitchclipsbot.config;
 
 
-import com.alexlatkin.twitchclipsbot.telegramBotCommands.BotCommands;
+import com.alexlatkin.twitchclipsbot.telegramBotCommands.buttonCommands.ButtonCommands;
+import com.alexlatkin.twitchclipsbot.telegramBotCommands.textCommands.BotCommands;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
@@ -18,5 +19,5 @@ public class BotConfig {
     @Value("${bot.token}")
     private String token;
     private Map<String, BotCommands> commands;
-    private Map<String, String> buttons;
+    private Map<String, ButtonCommands> buttonCommands;
 }

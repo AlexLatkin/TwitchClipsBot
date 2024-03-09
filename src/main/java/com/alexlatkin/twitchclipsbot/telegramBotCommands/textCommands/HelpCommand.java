@@ -1,5 +1,6 @@
-package com.alexlatkin.twitchclipsbot.telegramBotCommands;
+package com.alexlatkin.twitchclipsbot.telegramBotCommands.textCommands;
 
+import com.alexlatkin.twitchclipsbot.telegramBotCommands.textCommands.BotCommands;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;

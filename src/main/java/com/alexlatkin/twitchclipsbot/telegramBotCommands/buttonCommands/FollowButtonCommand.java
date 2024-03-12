@@ -2,15 +2,19 @@ package com.alexlatkin.twitchclipsbot.telegramBotCommands.buttonCommands;
 
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
 import org.telegram.telegrambots.meta.api.objects.Update;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 
 public class FollowButtonCommand implements ButtonCommands {
     @Override
     public String actionButtonInCurrentMessage(Update update) {
-        return null;
+        var messageText = update.getCallbackQuery().getMessage().getText();
+        messageText+="\n Вы подписались";
+        return messageText;
     }
 
+
     @Override
-    public String actionButtonWithNextMessage(Update update) {
+    public InlineKeyboardMarkup keyboard() {
         return null;
     }
 }

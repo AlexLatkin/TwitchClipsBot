@@ -6,5 +6,6 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMa
 
 public interface ButtonCommands {
     String actionButtonInCurrentMessage(Update update);
-    String actionButtonWithNextMessage(Update update);
+
+    InlineKeyboardMarkup keyboard();
 }

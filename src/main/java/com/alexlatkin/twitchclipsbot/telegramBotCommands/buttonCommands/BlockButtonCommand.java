@@ -1,6 +1,7 @@
 package com.alexlatkin.twitchclipsbot.telegramBotCommands.buttonCommands;
 
 import org.telegram.telegrambots.meta.api.objects.Update;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 
 public class BlockButtonCommand implements ButtonCommands {
     @Override
@@ -9,7 +10,7 @@ public class BlockButtonCommand implements ButtonCommands {
     }
 
     @Override
-    public String actionButtonWithNextMessage(Update update) {
+    public InlineKeyboardMarkup keyboard() {
         return null;
     }
 }

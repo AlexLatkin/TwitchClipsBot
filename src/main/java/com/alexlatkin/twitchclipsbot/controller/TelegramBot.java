@@ -10,12 +10,8 @@ import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
 import org.telegram.telegrambots.meta.api.objects.Update;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 @Getter
@@ -67,14 +63,17 @@ public class TelegramBot extends TelegramLongPollingBot {
             var buttonKey = update.getCallbackQuery().getData();
 
             if (botConfig.getButtonCommands().containsKey(buttonKey)) {
-
                 EditMessageText responseInCurrentMessage = new EditMessageText();
                 responseInCurrentMessage.setChatId(chatId);
                 responseInCurrentMessage.setMessageId(update.getCallbackQuery().getMessage().getMessageId());
                 responseInCurrentMessage.setText(botConfig.getButtonCommands().get(buttonKey).actionButtonInCurrentMessage(update));
-                responseInCurrentMessage.setReplyMarkup(botConfig.getButtonCommands().get(buttonKey).keyboard());
                 sendAnswerMessage(responseInCurrentMessage);
 
+            } else if (botConfig.getButtonCommandsWithAnswer().containsKey(buttonKey)) {
+                var response = new SendMessage();
+                response.setChatId(chatId);
+                response.setText(botConfig.getButtonCommandsWithAnswer().get(buttonKey).actionWithMessage(update));
+                sendAnswerMessage(response);
             }
         }
     }
@@ -86,4 +85,5 @@ public class TelegramBot extends TelegramLongPollingBot {
             throw new RuntimeException(e);
         }
     }
+
 }

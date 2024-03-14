@@ -1,7 +1,9 @@
 package com.alexlatkin.twitchclipsbot.controller;
 
 import com.alexlatkin.twitchclipsbot.model.dto.TwitchClipsDto;
+import com.alexlatkin.twitchclipsbot.model.entity.TestEntity;
 import com.alexlatkin.twitchclipsbot.service.ClipService;
+import com.alexlatkin.twitchclipsbot.service.TestEntityServ;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -17,6 +19,8 @@ import java.util.concurrent.ExecutionException;
 public class ClipsController {
     private final ClipService clipService;
 
+    private final TestEntityServ testEntityServ;
+
     public TwitchClipsDto getClipsByGameName(String gameName) throws URISyntaxException, IOException, InterruptedException {
         return clipService.getClipsByGameName(gameName);
     }
@@ -29,5 +33,9 @@ public class ClipsController {
 
     public List<CompletableFuture<String>> getClipsByBroadcasterNameV2() throws URISyntaxException, IOException, ExecutionException, InterruptedException {
         return clipService.getClipsByBroadcasterName();
+    }
+
+    public TestEntity getTest(String name) {
+        return testEntityServ.getTestByName(name);
     }
 }

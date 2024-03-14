@@ -3,10 +3,12 @@ package com.alexlatkin.twitchclipsbot;
 import com.alexlatkin.twitchclipsbot.controller.ClipsController;
 import com.alexlatkin.twitchclipsbot.model.dto.TwitchClip;
 import com.alexlatkin.twitchclipsbot.model.dto.TwitchClipsDto;
+import com.alexlatkin.twitchclipsbot.model.repository.TestRepo;
 import com.alexlatkin.twitchclipsbot.service.ClipService;
 import com.alexlatkin.twitchclipsbot.service.ClipServiceImpl;
 import com.alexlatkin.twitchclipsbot.twitchAPI.TwitchService;
 import com.alexlatkin.twitchclipsbot.twitchAPI.TwitchServiceImpl;
+import lombok.AllArgsConstructor;
 
 import java.io.IOException;
 import java.net.URISyntaxException;

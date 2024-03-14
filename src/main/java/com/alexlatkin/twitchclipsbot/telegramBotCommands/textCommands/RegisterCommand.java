@@ -15,7 +15,7 @@ public class RegisterCommand implements BotCommands {
     @Override
     public BotApiMethod firstMessage(Update update) {
         var chatId = update.getMessage().getChatId();
-        var answerText = "Hi";
+        var answerText = "User registered";
 
        if (userRepository.findById(chatId).isEmpty()) {
            User user = new User();
@@ -24,7 +24,9 @@ public class RegisterCommand implements BotCommands {
            userRepository.save(user);
        }
 
-        return new SendMessage(chatId.toString(), answerText);
+        var chatIdString = chatId.toString();
+
+        return new SendMessage(chatIdString, answerText);
     }
 
     @Override

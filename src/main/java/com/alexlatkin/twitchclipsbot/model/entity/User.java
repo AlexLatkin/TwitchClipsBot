@@ -18,13 +18,14 @@ public class User {
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "users_follow_list"
             , joinColumns = @JoinColumn(name = "users_id")
-            , inverseJoinColumns = @JoinColumn(name = "follow_list_id"))
-    private List<FollowList> followList;
+            , inverseJoinColumns = @JoinColumn(name = "broadcaster_id"))
+    private List<Broadcaster> followList;
 
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "users_black_list"
             , joinColumns = @JoinColumn(name = "users_id")
-            , inverseJoinColumns = @JoinColumn(name = "black_list_id"))
-    private List<BlackList> blackList;
+            , inverseJoinColumns = @JoinColumn(name = "broadcaster_id"))
+    private List<Broadcaster> blackList;
+
 
 }

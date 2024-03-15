@@ -33,7 +33,7 @@ public class BotInitializer {
         TelegramBotsApi telegramBotsApi = new TelegramBotsApi(DefaultBotSession.class);
 
         Map<String, BotCommands> commands = Map.of("/start", new RegisterCommand(userRepository)
-                                                    ,"/help", new HelpCommand()
+                                                    ,"/help", new HelpCommand(clipsController)
                                                     ,"/game_clips", new GameClipsCommand(clipsController)
                                                     ,"/caster_clips", new CasterClipsCommand(clipsController)
                                                     ,"/follow_list_clips", new FollowListClipsCommand()

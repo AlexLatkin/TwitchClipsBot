@@ -26,7 +26,7 @@ public class ClipServiceImpl implements ClipService {
     private final TwitchService twitchService;
 
     @Override
-    @Cacheable(cacheNames = {"ClipServiceImpl::getClipsByGameName"}, key = "#gameName")
+    @Cacheable("gameClips")
     public TwitchClipsDto getClipsByGameName(String gameName) throws URISyntaxException, IOException, InterruptedException {
         LocalDate localDate = LocalDate.now();
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");

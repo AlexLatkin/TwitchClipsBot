@@ -1,7 +1,8 @@
-package com.alexlatkin.twitchclipsbot.service;
+package com.alexlatkin.twitchclipsbot.service.serviceImpl;
 
 import com.alexlatkin.twitchclipsbot.model.dto.TwitchClip;
 import com.alexlatkin.twitchclipsbot.model.dto.TwitchClipsDto;
+import com.alexlatkin.twitchclipsbot.service.ClipService;
 import com.alexlatkin.twitchclipsbot.twitchAPI.TwitchService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import jakarta.annotation.Resource;

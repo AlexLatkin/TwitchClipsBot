@@ -38,7 +38,7 @@ public class GameClipsCommand implements BotCommands {
 
         try {
             clipUrl = clipsController.getClipsByGameName(gameName).getData().get(0).getUrl();
-            casterName = clipsController.getClipsByGameName(gameName).getData().get(0).getBroadcaster_name();
+            casterName = clipsController.getClipsByGameName(gameName).getData().get(0).getBroadcasterName();
         } catch (URISyntaxException e) {
             throw new RuntimeException(e);
         } catch (IOException e) {

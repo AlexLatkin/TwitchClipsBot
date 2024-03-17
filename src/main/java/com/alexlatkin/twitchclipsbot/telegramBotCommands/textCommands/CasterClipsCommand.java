@@ -1,6 +1,7 @@
 package com.alexlatkin.twitchclipsbot.telegramBotCommands.textCommands;
 
 import com.alexlatkin.twitchclipsbot.controller.ClipsController;
+import com.alexlatkin.twitchclipsbot.model.dto.TwitchClip;
 import com.alexlatkin.twitchclipsbot.telegramBotCommands.textCommands.BotCommands;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -10,6 +11,8 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,12 +33,26 @@ public class CasterClipsCommand implements BotCommands {
         var chatId = update.getMessage().getChatId().toString();
         var broadcasterName = update.getMessage().getText();
 
-        String clipUrl;
 
-//         clipUrl = clipsController.getClipsByBroadcasterName().get(0).getData().get(0).getUrl();
+        TwitchClip clip = null;
 
+        try {
+            clip = clipsController.getClipsByBroadcasterName(broadcasterName).getData().get(0);
+        } catch (URISyntaxException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
 
-        return null;
+        var clipUrl = clip.getUrl();
+
+         var msg = new SendMessage(chatId, clipUrl);
+
+         msg.setReplyMarkup(casterClipsCommandKeyboard(broadcasterName));
+
+        return msg;
     }
 
     public InlineKeyboardMarkup casterClipsCommandKeyboard(String casterName) {

@@ -4,6 +4,7 @@ package com.alexlatkin.twitchclipsbot.config;
 import com.alexlatkin.twitchclipsbot.controller.ClipsController;
 import com.alexlatkin.twitchclipsbot.controller.TelegramBot;
 import com.alexlatkin.twitchclipsbot.model.repository.UserRepository;
+import com.alexlatkin.twitchclipsbot.service.UserService;
 import com.alexlatkin.twitchclipsbot.telegramBotCommands.buttonCommands.BlockButtonCommand;
 import com.alexlatkin.twitchclipsbot.telegramBotCommands.buttonCommands.ButtonCommands;
 import com.alexlatkin.twitchclipsbot.telegramBotCommands.buttonCommands.FollowButtonCommand;
@@ -26,13 +27,13 @@ public class BotInitializer {
     final TelegramBot telegramBot;
     final BotConfig botConfig;
     final ClipsController clipsController;
-    final UserRepository userRepository;
+    final UserService userService;
 
     @EventListener({ContextRefreshedEvent.class})
     public void init() throws TelegramApiException {
         TelegramBotsApi telegramBotsApi = new TelegramBotsApi(DefaultBotSession.class);
 
-        Map<String, BotCommands> commands = Map.of("/start", new RegisterCommand(userRepository)
+        Map<String, BotCommands> commands = Map.of("/start", new RegisterCommand(userService)
                                                     ,"/help", new HelpCommand(clipsController)
                                                     ,"/game_clips", new GameClipsCommand(clipsController)
                                                     ,"/caster_clips", new CasterClipsCommand(clipsController)

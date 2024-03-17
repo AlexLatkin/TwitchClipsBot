@@ -11,6 +11,11 @@ import org.springframework.stereotype.Service;
 public class BroadcasterServiceImpl implements BroadcasterService {
     BroadcasterRepository broadcasterRepository;
     @Override
+    public boolean existsBroadcasterByBroadcasterName(String broadcasterName) {
+        return broadcasterRepository.existsBroadcasterByBroadcasterName(broadcasterName);
+    }
+
+    @Override
     public Broadcaster getBroadcasterByBroadcasterName(String broadcasterName) {
         return broadcasterRepository.findBroadcasterByBroadcasterName(broadcasterName);
     }

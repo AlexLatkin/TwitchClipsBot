@@ -10,6 +10,17 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserServiceImpl implements UserService {
     UserRepository userRepository;
+
+    @Override
+    public boolean existsUserByChatId(Long chatId) {
+        return userRepository.existsUserByChatId(chatId);
+    }
+
+    @Override
+    public User getUserByChatId(Long chatId) {
+        return userRepository.findUserByChatId(chatId);
+    }
+
     @Override
     public void addUser(Long chatId, String userName) {
         User user = new User();

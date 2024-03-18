@@ -10,6 +10,22 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserServiceImpl implements UserService {
     UserRepository userRepository;
+
+    @Override
+    public boolean existsUserByChatId(Long chatId) {
+        return userRepository.existsUserByChatId(chatId);
+    }
+
+    @Override
+    public void addBroadcasterInUserFollowList(Long userId, Integer broadcasterId) {
+        userRepository.addBroadcasterInUserFollowList(userId, broadcasterId);
+    }
+
+    @Override
+    public void addBroadcasterInUserBlackList(Long userId, Integer broadcasterId) {
+        userRepository.addBroadcasterInUserBlackList(userId, broadcasterId);
+    }
+
     @Override
     public void addUser(Long chatId, String userName) {
         User user = new User();

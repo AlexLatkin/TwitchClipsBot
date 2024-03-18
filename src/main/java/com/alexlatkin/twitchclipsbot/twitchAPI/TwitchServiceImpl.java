@@ -5,7 +5,6 @@ import com.alexlatkin.twitchclipsbot.model.dto.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
@@ -107,7 +106,7 @@ public class TwitchServiceImpl implements TwitchService {
 
     @Override
     @Async
-    public CompletableFuture<String> getClipsByBroadcasterName(int broadcasterId, String date) throws ExecutionException, InterruptedException, JsonProcessingException, URISyntaxException {
+    public CompletableFuture<String> getClipsByBroadcastersId(int broadcasterId, String date) throws ExecutionException, InterruptedException, JsonProcessingException, URISyntaxException {
         String clipDate = date + "T00:00:00%2B03:00";
 
         String path ="clips?broadcaster_id=" + broadcasterId + "&started_at=" + clipDate;
@@ -131,7 +130,7 @@ public class TwitchServiceImpl implements TwitchService {
     }
 
     @Override
-    public TwitchClipsDto getClipsByBroadcasterNameTest(int broadcasterId, String date) throws URISyntaxException, IOException, InterruptedException {
+    public TwitchClipsDto getClipsByBroadcasterId(int broadcasterId, String date) throws URISyntaxException, IOException, InterruptedException {
         String clipDate = date + "T00:00:00%2B03:00";
 
         String path ="clips?broadcaster_id=" + broadcasterId + "&started_at=" + clipDate;

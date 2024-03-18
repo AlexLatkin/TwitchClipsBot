@@ -11,6 +11,11 @@ import org.springframework.stereotype.Service;
 public class GameServiceImpl implements GameService {
     GameRepository gameRepository;
     @Override
+    public boolean existsGameByGameName(String gameName) {
+        return gameRepository.existsGameByGameName(gameName);
+    }
+
+    @Override
     public Game getGameByGameName(String gameName) {
         return gameRepository.findGameByGameName(gameName);
     }

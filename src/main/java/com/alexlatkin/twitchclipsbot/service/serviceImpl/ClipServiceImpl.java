@@ -1,13 +1,12 @@
 package com.alexlatkin.twitchclipsbot.service.serviceImpl;
 
-import com.alexlatkin.twitchclipsbot.model.dto.TwitchClip;
 import com.alexlatkin.twitchclipsbot.model.dto.TwitchClipsDto;
+import com.alexlatkin.twitchclipsbot.service.BroadcasterService;
 import com.alexlatkin.twitchclipsbot.service.ClipService;
+import com.alexlatkin.twitchclipsbot.service.GameService;
 import com.alexlatkin.twitchclipsbot.twitchAPI.TwitchService;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import jakarta.annotation.Resource;
 import lombok.RequiredArgsConstructor;
-import org.springframework.boot.autoconfigure.data.redis.RedisProperties;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
@@ -19,12 +18,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class ClipServiceImpl implements ClipService {
     private final TwitchService twitchService;
+    private final GameService gameService;
+    private final BroadcasterService broadcasterService;
 
     @Override
     @Cacheable("gameClips")
@@ -33,7 +33,14 @@ public class ClipServiceImpl implements ClipService {
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         String date = localDate.format(dateTimeFormatter);
 
-        var gameId = twitchService.getGame(gameName).getId();
+        var gameId = 0;
+
+        if (gameService.existsGameByGameName(gameName)) {
+            gameId = gameService.getGameByGameName(gameName).getGameId();
+        } else {
+            gameId = twitchService.getGame(gameName).getId();
+            gameService.addGame(gameId, gameName);
+        }
 
         return twitchService.getClipsByGameId(gameId, date);
     }
@@ -77,7 +84,7 @@ public class ClipServiceImpl implements ClipService {
 
         list.stream().forEach(bcID -> {
             try {
-                allClips.add(twitchService.getClipsByBroadcasterName(bcID, date));
+                allClips.add(twitchService.getClipsByBroadcastersId(bcID, date));
             } catch (ExecutionException e) {
                 throw new RuntimeException(e);
             } catch (InterruptedException e) {
@@ -103,58 +110,20 @@ public class ClipServiceImpl implements ClipService {
     }
 
     @Override
-    public List<TwitchClipsDto> getClipsByBroadcasterNameTest() throws URISyntaxException, IOException, InterruptedException {
+    public TwitchClipsDto getClipsByBroadcasterName(String broadcasterName) throws URISyntaxException, IOException, InterruptedException {
         LocalDate localDate = LocalDate.now();
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         String date = localDate.format(dateTimeFormatter);
 
-        var broadcasterId = twitchService.getBroadcaster("qsnake").getId();
-        var broadcasterId2 = twitchService.getBroadcaster("madarapoe").getId();
-        var broadcasterId3 = twitchService.getBroadcaster("mariachi").getId();
+        var broadcasterId = 0;
 
-        List<Integer> list = new ArrayList<>();
-        list.add(broadcasterId3);
-        list.add(broadcasterId2);
-        list.add(broadcasterId2);
-        list.add(broadcasterId2);
-        list.add(broadcasterId2);
-        list.add(broadcasterId2);
-        list.add(broadcasterId2);
-        list.add(broadcasterId2);
-        list.add(broadcasterId2);
-        list.add(broadcasterId2);
-        list.add(broadcasterId2);
-        list.add(broadcasterId2);
-        list.add(broadcasterId2);
-        list.add(broadcasterId2);
-        list.add(broadcasterId2);
-        list.add(broadcasterId2);
-        list.add(broadcasterId2);
-        list.add(broadcasterId2);
-        list.add(broadcasterId2);
-        list.add(broadcasterId2);
+        if (broadcasterService.existsBroadcasterByBroadcasterName(broadcasterName)) {
+            broadcasterId = broadcasterService.getBroadcasterByBroadcasterName(broadcasterName).getBroadcasterId();
+        } else {
+            broadcasterId = twitchService.getBroadcaster(broadcasterName).getId();
+            broadcasterService.addBroadcaster(broadcasterId, broadcasterName);
+        }
 
-        long startTime = System.nanoTime();
-
-        List<TwitchClipsDto> twitchClipsDtos = list.stream().map(e -> {
-            try {
-                return twitchService.getClipsByBroadcasterNameTest(e, date);
-            } catch (URISyntaxException ex) {
-                throw new RuntimeException(ex);
-            } catch (IOException ex) {
-                throw new RuntimeException(ex);
-            } catch (InterruptedException ex) {
-                throw new RuntimeException(ex);
-            }
-        }).collect(Collectors.toList());
-
-        long endTime = System.nanoTime();
-
-        long duration = (endTime - startTime);
-
-        System.out.println(duration);
-
-
-        return twitchClipsDtos;
+        return twitchService.getClipsByBroadcasterId(broadcasterId, date);
     }
 }

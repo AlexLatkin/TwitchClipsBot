@@ -1,6 +1,7 @@
 package com.alexlatkin.twitchclipsbot.service.serviceImpl;
 
 import com.alexlatkin.twitchclipsbot.model.dto.TwitchClipsDto;
+import com.alexlatkin.twitchclipsbot.model.entity.Broadcaster;
 import com.alexlatkin.twitchclipsbot.service.BroadcasterService;
 import com.alexlatkin.twitchclipsbot.service.ClipService;
 import com.alexlatkin.twitchclipsbot.service.GameService;
@@ -46,12 +47,11 @@ public class ClipServiceImpl implements ClipService {
     }
 
     @Override
-    public List<CompletableFuture<String>> getClipsByBroadcasterName() throws URISyntaxException, IOException, InterruptedException, ExecutionException {
+    public List<CompletableFuture<String>> getClipsByUserFollowList(List<Broadcaster> userFollowList) throws URISyntaxException, IOException, InterruptedException, ExecutionException {
         LocalDate localDate = LocalDate.now();
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         String date = localDate.format(dateTimeFormatter);
 
-        var broadcasterId = twitchService.getBroadcaster("qsnake").getId();
         var broadcasterId2 = twitchService.getBroadcaster("madarapoe").getId();
         var broadcasterId3 = twitchService.getBroadcaster("mariachi").getId();
 

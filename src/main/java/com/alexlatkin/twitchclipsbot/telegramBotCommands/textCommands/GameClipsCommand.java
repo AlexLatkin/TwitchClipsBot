@@ -1,9 +1,7 @@
 package com.alexlatkin.twitchclipsbot.telegramBotCommands.textCommands;
 
-import com.alexlatkin.twitchclipsbot.config.BotConfig;
 import com.alexlatkin.twitchclipsbot.controller.ClipsController;
 import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
@@ -15,7 +13,6 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
-@NoArgsConstructor
 @AllArgsConstructor
 public class GameClipsCommand implements BotCommands {
     ClipsController clipsController;

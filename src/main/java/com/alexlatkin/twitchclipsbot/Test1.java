@@ -1,8 +1,12 @@
 package com.alexlatkin.twitchclipsbot;
 
+import com.alexlatkin.twitchclipsbot.model.entity.User;
+import com.alexlatkin.twitchclipsbot.model.repository.UserRepository;
+
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.concurrent.ExecutionException;
+
 
 public class Test1 {
     public static void main(String[] args) throws IOException, InterruptedException, URISyntaxException, ExecutionException {

@@ -25,8 +25,8 @@ public class ClipsController {
         return clipService.getClipsByBroadcasterName(broadcasterName);
     }
 
-    public List<CompletableFuture<String>> getClipsByBroadcasterNameV2() throws URISyntaxException, IOException, ExecutionException, InterruptedException {
-        return clipService.getClipsByBroadcasterName();
-    }
+//    public List<CompletableFuture<String>> getClipsByBroadcasterNameV2(String broadcasterName) throws URISyntaxException, IOException, ExecutionException, InterruptedException {
+//        return clipService.getClipsByBroadcasterName(broadcasterName);
+//    }
 
 }

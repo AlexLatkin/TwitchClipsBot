@@ -5,6 +5,7 @@ import com.alexlatkin.twitchclipsbot.model.repository.BroadcasterRepository;
 import com.alexlatkin.twitchclipsbot.service.BroadcasterService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -30,13 +31,4 @@ public class BroadcasterServiceImpl implements BroadcasterService {
         broadcasterRepository.save(broadcaster);
     }
 
-    @Override
-    public List<Broadcaster> getBroadcastersFromUserFollowListByUserId(Long userId) {
-        return broadcasterRepository.followListByUserId(userId);
-    }
-
-    @Override
-    public List<Broadcaster> getBroadcastersFromUserBlackListByUserId(Long userId) {
-        return broadcasterRepository.blackListByUserId(userId);
-    }
 }

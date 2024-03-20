@@ -5,6 +5,7 @@ import com.alexlatkin.twitchclipsbot.controller.BroadcasterController;
 import com.alexlatkin.twitchclipsbot.controller.ClipsController;
 import com.alexlatkin.twitchclipsbot.controller.TelegramBot;
 import com.alexlatkin.twitchclipsbot.controller.UserController;
+import com.alexlatkin.twitchclipsbot.model.repository.UserRepository;
 import com.alexlatkin.twitchclipsbot.telegramBotCommands.buttonCommands.BlockButtonCommand;
 import com.alexlatkin.twitchclipsbot.telegramBotCommands.buttonCommands.ButtonCommands;
 import com.alexlatkin.twitchclipsbot.telegramBotCommands.buttonCommands.FollowButtonCommand;
@@ -34,7 +35,7 @@ public class BotInitializer {
         TelegramBotsApi telegramBotsApi = new TelegramBotsApi(DefaultBotSession.class);
 
         Map<String, BotCommands> commands = Map.of("/start", new RegisterCommand(userController)
-                                                    ,"/help", new HelpCommand()
+                                                    ,"/help", new HelpCommand(userController, broadcasterController)
                                                     ,"/game_clips", new GameClipsCommand(clipsController)
                                                     ,"/caster_clips", new CasterClipsCommand(clipsController)
                                                     ,"/follow_list_clips", new FollowListClipsCommand()

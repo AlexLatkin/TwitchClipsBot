@@ -3,10 +3,14 @@ package com.alexlatkin.twitchclipsbot.model.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 import java.util.List;
 
-@Data
+@Getter
+@Setter
 @Entity(name = "users")
 public class User {
     @Id
@@ -15,17 +19,23 @@ public class User {
     @Column(name = "name")
     private String userName;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "users_follow_list"
             , joinColumns = @JoinColumn(name = "users_id")
-            , inverseJoinColumns = @JoinColumn(name = "broadcaster_id"))
+            , inverseJoinColumns = @JoinColumn(name = "bc_id"))
     private List<Broadcaster> followList;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany
     @JoinTable(name = "users_black_list"
             , joinColumns = @JoinColumn(name = "users_id")
-            , inverseJoinColumns = @JoinColumn(name = "broadcaster_id"))
+            , inverseJoinColumns = @JoinColumn(name = "bc_id"))
     private List<Broadcaster> blackList;
 
-
+    @Override
+    public String toString() {
+        return "User{" +
+                "chatId=" + chatId +
+                ", userName='" + userName + '\'' +
+                '}';
+    }
 }

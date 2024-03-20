@@ -10,7 +10,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 public class BroadcasterController {
-    BroadcasterService broadcasterService;
+    final BroadcasterService broadcasterService;
 
     public boolean existsBroadcasterByBroadcasterName(String broadcasterName) {
         return broadcasterService.existsBroadcasterByBroadcasterName(broadcasterName);
@@ -24,11 +24,4 @@ public class BroadcasterController {
         broadcasterService.addBroadcaster(broadcasterId, broadcasterName);
     }
 
-    public List<Broadcaster> getBroadcastersFromUserFollowListByUserId(Long userId) {
-        return broadcasterService.getBroadcastersFromUserFollowListByUserId(userId);
-    }
-
-    public List<Broadcaster> getBroadcastersFromUserBlackListByUserId(Long userId) {
-        return broadcasterService.getBroadcastersFromUserBlackListByUserId(userId);
-    }
 }

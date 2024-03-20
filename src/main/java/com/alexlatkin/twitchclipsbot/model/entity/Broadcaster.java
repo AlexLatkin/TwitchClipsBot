@@ -1,15 +1,16 @@
 package com.alexlatkin.twitchclipsbot.model.entity;
 
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
+import jakarta.persistence.*;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 import java.util.List;
 
-@Data
+@Getter
+@Setter
 @Entity(name = "broadcaster")
 public class Broadcaster {
     @Id
@@ -17,8 +18,16 @@ public class Broadcaster {
     private Integer broadcasterId;
     @Column(name = "broadcaster_name")
     private String broadcasterName;
-    @ManyToMany(mappedBy = "followList")
+    @ManyToMany(mappedBy = "followList", fetch = FetchType.EAGER)
     private List<User> userFollowList;
     @ManyToMany(mappedBy = "blackList")
     private List<User> userBlackList;
+
+    @Override
+    public String toString() {
+        return "Broadcaster{" +
+                "broadcasterId=" + broadcasterId +
+                ", broadcasterName='" + broadcasterName + '\'' +
+                '}';
+    }
 }

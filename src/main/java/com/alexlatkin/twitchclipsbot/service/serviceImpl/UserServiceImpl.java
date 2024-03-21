@@ -1,5 +1,6 @@
 package com.alexlatkin.twitchclipsbot.service.serviceImpl;
 
+import com.alexlatkin.twitchclipsbot.controller.UserController;
 import com.alexlatkin.twitchclipsbot.model.entity.Broadcaster;
 import com.alexlatkin.twitchclipsbot.model.entity.User;
 import com.alexlatkin.twitchclipsbot.model.repository.UserRepository;
@@ -15,12 +16,12 @@ import java.util.List;
 @Service
 public class UserServiceImpl implements UserService {
     UserRepository userRepository;
-
+    @Transactional
     @Override
     public boolean existsUserByChatId(Long chatId) {
         return userRepository.existsUserByChatId(chatId);
     }
-
+    @Transactional
     @Override
     public void addUser(Long chatId, String userName) {
         User user = new User();
@@ -58,17 +59,17 @@ public class UserServiceImpl implements UserService {
         var user = userRepository.findById(chatId).orElseThrow(() -> new RuntimeException("Пользователь не найден"));
         return user.getBlackList();
     }
-
+    @Transactional
     @Override
     public void deleteBroadcasterFromUserFollowList(Long chatId, Broadcaster broadcaster) {
-        var user = userRepository.findById(chatId).orElseThrow(() -> new RuntimeException("Пользователь не найден"));
+        var user = userRepository.findById(chatId).get();
         user.getFollowList().remove(broadcaster);
+        broadcaster.getUserFollowList().remove(user);
+        userRepository.save(user);
     }
-
+    @Transactional
     @Override
     public void deleteBroadcasterFromUserBlackList(Long chatId, Broadcaster broadcaster) {
-        var user = userRepository.findById(chatId).orElseThrow(() -> new RuntimeException("Пользователь не найден"));
-        user.getBlackList().remove(broadcaster);
     }
 
     @Override

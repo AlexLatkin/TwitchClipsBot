@@ -120,8 +120,12 @@ public class ClipServiceImpl implements ClipService {
         if (broadcasterService.existsBroadcasterByBroadcasterName(broadcasterName)) {
             broadcasterId = broadcasterService.getBroadcasterByBroadcasterName(broadcasterName).getBroadcasterId();
         } else {
-            broadcasterId = twitchService.getBroadcaster(broadcasterName).getId();
-            broadcasterService.addBroadcaster(broadcasterId, broadcasterName);
+            var broadcasterTwitch = twitchService.getBroadcaster(broadcasterName);
+            var bc = new Broadcaster();
+            bc.setBroadcasterId(broadcasterTwitch.getId());
+            bc.setBroadcasterName(bc.getBroadcasterName());
+            broadcasterService.addBroadcaster(bc);
+            broadcasterId = broadcasterTwitch.getId();
         }
 
         return twitchService.getClipsByBroadcasterId(broadcasterId, date);

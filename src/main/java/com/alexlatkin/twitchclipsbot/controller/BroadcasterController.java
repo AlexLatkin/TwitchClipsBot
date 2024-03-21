@@ -20,8 +20,8 @@ public class BroadcasterController {
         return broadcasterService.getBroadcasterByBroadcasterName(broadcasterName);
     }
 
-    public void addBroadcaster(Integer broadcasterId, String broadcasterName) {
-        broadcasterService.addBroadcaster(broadcasterId, broadcasterName);
+    public void addBroadcaster(Broadcaster broadcaster) {
+        broadcasterService.addBroadcaster(broadcaster);
     }
 
 }

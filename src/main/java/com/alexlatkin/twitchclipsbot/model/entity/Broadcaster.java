@@ -18,9 +18,9 @@ public class Broadcaster {
     private Integer broadcasterId;
     @Column(name = "broadcaster_name")
     private String broadcasterName;
-    @ManyToMany(mappedBy = "followList", fetch = FetchType.EAGER)
+    @ManyToMany(mappedBy = "followList", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<User> userFollowList;
-    @ManyToMany(mappedBy = "blackList")
+    @ManyToMany(mappedBy = "blackList", fetch = FetchType.EAGER)
     private List<User> userBlackList;
 
     @Override

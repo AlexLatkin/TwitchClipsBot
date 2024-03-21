@@ -24,10 +24,7 @@ public class BroadcasterServiceImpl implements BroadcasterService {
     }
 
     @Override
-    public void addBroadcaster(Integer broadcasterId, String broadcasterName) {
-        Broadcaster broadcaster = new Broadcaster();
-        broadcaster.setBroadcasterId(broadcasterId);
-        broadcaster.setBroadcasterName(broadcasterName);
+    public void addBroadcaster(Broadcaster broadcaster) {
         broadcasterRepository.save(broadcaster);
     }
 

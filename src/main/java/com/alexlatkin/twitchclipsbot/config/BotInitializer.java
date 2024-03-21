@@ -39,8 +39,8 @@ public class BotInitializer {
                                                     ,"/game_clips", new GameClipsCommand(clipsController)
                                                     ,"/caster_clips", new CasterClipsCommand(clipsController)
                                                     ,"/follow_list_clips", new FollowListClipsCommand()
-                                                    ,"/follow_list", new FollowListCommand(broadcasterController)
-                                                    ,"/black_list", new BlackListCommand(broadcasterController));
+                                                    ,"/follow_list", new FollowListCommand(userController)
+                                                    ,"/black_list", new BlackListCommand(userController));
 
         Map<String, ButtonCommands> buttonCommands = Map.of("FOLLOW", new FollowButtonCommand()
                                                             ,"BLOCK", new BlockButtonCommand());

@@ -28,4 +28,15 @@ public class UserController {
         userService.addBroadcasterInUserBlackList(userId, broadcaster);
     }
 
+    public List<Broadcaster> getUserFollowListByUserChatId(Long chatId) {
+        return userService.getUserFollowListByUserChatId(chatId);
+    }
+
+    public List<Broadcaster> getUserBlackListByUserChatId(Long chatId) {
+        return userService.getUserBlackListByUserChatId(chatId);
+    }
+
+    public void deleteBroadcasterFromUserFollowList(Long chatId, Broadcaster broadcaster) {
+        userService.deleteBroadcasterFromUserFollowList(chatId, broadcaster);
+    }
 }

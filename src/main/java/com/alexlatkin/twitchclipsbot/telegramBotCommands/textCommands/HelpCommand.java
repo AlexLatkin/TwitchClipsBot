@@ -11,7 +11,6 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 @AllArgsConstructor
 public class HelpCommand implements BotCommands {
     UserController userController;
-
     BroadcasterController broadcasterController;
     @Override
     public BotApiMethod firstMessage(Update update) {
@@ -30,8 +29,14 @@ public class HelpCommand implements BotCommands {
 
 
 //        Broadcaster broadcasterTest = new Broadcaster();
-//        broadcasterTest.setBroadcasterId(1);
-//        broadcasterTest.setBroadcasterName("TestName");
+//        broadcasterTest.setBroadcasterId(6);
+//        broadcasterTest.setBroadcasterName("Qwqe");
+//        broadcasterController.addBroadcaster(broadcasterTest);
+
+        var bc = broadcasterController.getBroadcasterByBroadcasterName("snessh");
+
+
+        userController.deleteBroadcasterFromUserFollowList(update.getMessage().getChatId(), bc);
 //
 //        broadcasterController.addBroadcaster(broadcasterTest.getBroadcasterId(), broadcasterTest.getBroadcasterName());
 //

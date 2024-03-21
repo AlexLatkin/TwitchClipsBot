@@ -6,6 +6,6 @@ import java.util.List;
 
 public interface BroadcasterService {
     Broadcaster getBroadcasterByBroadcasterName(String broadcasterName);
-    void addBroadcaster(Integer broadcasterId, String broadcasterName);
+    void addBroadcaster(Broadcaster broadcaster);
     boolean existsBroadcasterByBroadcasterName(String broadcasterName);
 }

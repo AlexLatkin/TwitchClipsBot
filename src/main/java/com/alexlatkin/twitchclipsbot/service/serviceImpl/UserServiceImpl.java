@@ -1,6 +1,5 @@
 package com.alexlatkin.twitchclipsbot.service.serviceImpl;
 
-import com.alexlatkin.twitchclipsbot.controller.UserController;
 import com.alexlatkin.twitchclipsbot.model.entity.Broadcaster;
 import com.alexlatkin.twitchclipsbot.model.entity.User;
 import com.alexlatkin.twitchclipsbot.model.repository.UserRepository;
@@ -64,21 +63,27 @@ public class UserServiceImpl implements UserService {
     public void deleteBroadcasterFromUserFollowList(Long chatId, Broadcaster broadcaster) {
         var user = userRepository.findById(chatId).get();
         user.getFollowList().remove(broadcaster);
-        broadcaster.getUserFollowList().remove(user);
         userRepository.save(user);
     }
     @Transactional
     @Override
     public void deleteBroadcasterFromUserBlackList(Long chatId, Broadcaster broadcaster) {
+        var user = userRepository.findById(chatId).get();
+        user.getBlackList().remove(broadcaster);
+        userRepository.save(user);
     }
-
+    @Transactional
     @Override
     public void clearUserFollowList(Long chatId) {
-
+        var user = userRepository.findById(chatId).get();
+        user.getFollowList().clear();
+        userRepository.save(user);
     }
-
+    @Transactional
     @Override
     public void clearUserBlackList(Long chatId) {
-
+        var user = userRepository.findById(chatId).get();
+        user.getBlackList().clear();
+        userRepository.save(user);
     }
 }

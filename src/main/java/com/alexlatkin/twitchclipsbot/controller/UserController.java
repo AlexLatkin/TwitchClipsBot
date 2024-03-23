@@ -39,4 +39,16 @@ public class UserController {
     public void deleteBroadcasterFromUserFollowList(Long chatId, Broadcaster broadcaster) {
         userService.deleteBroadcasterFromUserFollowList(chatId, broadcaster);
     }
+
+    public void deleteBroadcasterFromUserBlackList(Long chatId, Broadcaster broadcaster) {
+        userService.deleteBroadcasterFromUserBlackList(chatId, broadcaster);
+    }
+
+    public void clearUserFollowList(Long chatId) {
+        userService.clearUserFollowList(chatId);
+    }
+
+    public void clearUserBlackList(Long chatId) {
+        userService.clearUserBlackList(chatId);
+    }
 }

@@ -3,9 +3,11 @@ package com.alexlatkin.twitchclipsbot.model.entity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 @Entity(name = "game")
 public class Game {
     @Id
@@ -13,4 +15,11 @@ public class Game {
     private Integer gameId;
     @Column(name = "game_name")
     private String gameName;
+    @Override
+    public String toString() {
+        return "Game{" +
+                "gameId=" + gameId +
+                ", gameName='" + gameName + '\'' +
+                '}';
+    }
 }

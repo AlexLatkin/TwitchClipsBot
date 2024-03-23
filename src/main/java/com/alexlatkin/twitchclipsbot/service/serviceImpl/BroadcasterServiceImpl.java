@@ -3,16 +3,14 @@ package com.alexlatkin.twitchclipsbot.service.serviceImpl;
 import com.alexlatkin.twitchclipsbot.model.entity.Broadcaster;
 import com.alexlatkin.twitchclipsbot.model.repository.BroadcasterRepository;
 import com.alexlatkin.twitchclipsbot.service.BroadcasterService;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Service
 public class BroadcasterServiceImpl implements BroadcasterService {
-    BroadcasterRepository broadcasterRepository;
+    private final BroadcasterRepository broadcasterRepository;
     @Override
     public boolean existsBroadcasterByBroadcasterName(String broadcasterName) {
         return broadcasterRepository.existsBroadcasterByBroadcasterName(broadcasterName);

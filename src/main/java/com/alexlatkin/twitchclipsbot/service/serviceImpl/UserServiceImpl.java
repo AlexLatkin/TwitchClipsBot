@@ -4,17 +4,17 @@ import com.alexlatkin.twitchclipsbot.model.entity.Broadcaster;
 import com.alexlatkin.twitchclipsbot.model.entity.User;
 import com.alexlatkin.twitchclipsbot.model.repository.UserRepository;
 import com.alexlatkin.twitchclipsbot.service.UserService;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Service
 public class UserServiceImpl implements UserService {
-    UserRepository userRepository;
+    private final UserRepository userRepository;
     @Transactional
     @Override
     public boolean existsUserByChatId(Long chatId) {

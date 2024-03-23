@@ -3,13 +3,13 @@ package com.alexlatkin.twitchclipsbot.service.serviceImpl;
 import com.alexlatkin.twitchclipsbot.model.entity.Game;
 import com.alexlatkin.twitchclipsbot.model.repository.GameRepository;
 import com.alexlatkin.twitchclipsbot.service.GameService;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Service
 public class GameServiceImpl implements GameService {
-    GameRepository gameRepository;
+    private final GameRepository gameRepository;
     @Override
     public boolean existsGameByGameName(String gameName) {
         return gameRepository.existsGameByGameName(gameName);

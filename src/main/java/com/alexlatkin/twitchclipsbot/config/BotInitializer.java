@@ -5,7 +5,7 @@ import com.alexlatkin.twitchclipsbot.controller.BroadcasterController;
 import com.alexlatkin.twitchclipsbot.controller.ClipsController;
 import com.alexlatkin.twitchclipsbot.controller.TelegramBot;
 import com.alexlatkin.twitchclipsbot.controller.UserController;
-import com.alexlatkin.twitchclipsbot.model.repository.UserRepository;
+import com.alexlatkin.twitchclipsbot.model.entity.Broadcaster;
 import com.alexlatkin.twitchclipsbot.telegramBotCommands.buttonCommands.BlockButtonCommand;
 import com.alexlatkin.twitchclipsbot.telegramBotCommands.buttonCommands.ButtonCommands;
 import com.alexlatkin.twitchclipsbot.telegramBotCommands.buttonCommands.FollowButtonCommand;
@@ -30,19 +30,22 @@ public class BotInitializer {
     final ClipsController clipsController;
     final UserController userController;
     final BroadcasterController broadcasterController;
+    final FollowButtonCommand followButtonCommand;
     @EventListener({ContextRefreshedEvent.class})
     public void init() throws TelegramApiException {
         TelegramBotsApi telegramBotsApi = new TelegramBotsApi(DefaultBotSession.class);
 
+        GameClipsCommand gameClipsCommand = new GameClipsCommand(clipsController, followButtonCommand, new Broadcaster());
+
         Map<String, BotCommands> commands = Map.of("/start", new RegisterCommand(userController)
                                                     ,"/help", new HelpCommand(userController, broadcasterController)
-                                                    ,"/game_clips", new GameClipsCommand(clipsController)
+                                                    ,"/game_clips", gameClipsCommand
                                                     ,"/caster_clips", new CasterClipsCommand(clipsController)
                                                     ,"/follow_list_clips", new FollowListClipsCommand()
                                                     ,"/follow_list", new FollowListCommand(userController)
                                                     ,"/black_list", new BlackListCommand(userController));
 
-        Map<String, ButtonCommands> buttonCommands = Map.of("FOLLOW", new FollowButtonCommand()
+        Map<String, ButtonCommands> buttonCommands = Map.of("FOLLOW", new FollowButtonCommand(userController, broadcasterController)
                                                             ,"BLOCK", new BlockButtonCommand());
 
         Map<String, ButtonCommandsWithAnswer> buttonCommandsWithAnswer = Map.of("NEXT", new NextClipButtonCommand());

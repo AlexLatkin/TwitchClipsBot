@@ -1,7 +1,11 @@
 package com.alexlatkin.twitchclipsbot.telegramBotCommands.textCommands;
 
 import com.alexlatkin.twitchclipsbot.controller.ClipsController;
+import com.alexlatkin.twitchclipsbot.model.dto.TwitchClip;
+import com.alexlatkin.twitchclipsbot.model.entity.Broadcaster;
+import com.alexlatkin.twitchclipsbot.telegramBotCommands.buttonCommands.ButtonCommands;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
@@ -12,10 +16,12 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
-
+@Getter
 @AllArgsConstructor
 public class GameClipsCommand implements BotCommands {
     ClipsController clipsController;
+    ButtonCommands buttonCommands;
+    Broadcaster broadcaster;
     @Override
     public BotApiMethod firstMessage(Update update) {
         var chatId = update.getMessage().getChatId().toString();
@@ -33,16 +39,37 @@ public class GameClipsCommand implements BotCommands {
 
         String casterName;
 
+        List<TwitchClip> twitchClipsByGameName;
+
         try {
-            clipUrl = clipsController.getClipsByGameName(gameName).getData().get(0).getUrl();
-            casterName = clipsController.getClipsByGameName(gameName).getData().get(0).getBroadcasterName();
+            twitchClipsByGameName = clipsController.getClipsByGameName(gameName).getData();
         } catch (URISyntaxException e) {
-            throw new RuntimeException(e);
+        throw new RuntimeException(e);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+        throw new RuntimeException(e);
         } catch (InterruptedException e) {
-            throw new RuntimeException(e);
+        throw new RuntimeException(e);
         }
+
+//        try {
+//            clipUrl = clipsController.getClipsByGameName(gameName).getData().get(0).getUrl();
+//            casterName = clipsController.getClipsByGameName(gameName).getData().get(0).getBroadcasterName();
+//
+//        } catch (URISyntaxException e) {
+//            throw new RuntimeException(e);
+//        } catch (IOException e) {
+//            throw new RuntimeException(e);
+//        } catch (InterruptedException e) {
+//            throw new RuntimeException(e);
+//        }
+
+        clipUrl = twitchClipsByGameName.get(0).getUrl();
+        casterName = twitchClipsByGameName.get(0).getBroadcasterName();
+        var broadcasterId = twitchClipsByGameName.get(0).getBroadcasterId();
+
+
+        broadcaster.setBroadcasterName(casterName);
+        broadcaster.setBroadcasterId(broadcasterId);
 
         var msg = new SendMessage(chatId, clipUrl);
 

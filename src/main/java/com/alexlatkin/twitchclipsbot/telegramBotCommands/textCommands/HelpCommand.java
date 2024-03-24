@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
+import redis.clients.jedis.Jedis;
 
 @AllArgsConstructor
 public class HelpCommand implements BotCommands {
@@ -33,10 +34,14 @@ public class HelpCommand implements BotCommands {
 //        broadcasterTest.setBroadcasterName("Qwqe");
 //        broadcasterController.addBroadcaster(broadcasterTest);
 
-        var bc = broadcasterController.getBroadcasterByBroadcasterName("snessh");
+
+        Jedis jedis = new Jedis();
+
+        String cacheResponse = jedis.get("gameClips::Dota 2");
+
+        System.out.println(cacheResponse);
 
 
-        userController.deleteBroadcasterFromUserFollowList(update.getMessage().getChatId(), bc);
 //
 //        broadcasterController.addBroadcaster(broadcasterTest.getBroadcasterId(), broadcasterTest.getBroadcasterName());
 //

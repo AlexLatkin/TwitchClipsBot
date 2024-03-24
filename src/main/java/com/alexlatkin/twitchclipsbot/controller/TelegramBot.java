@@ -20,7 +20,7 @@ import java.util.Map;
 @Component
 public class TelegramBot extends TelegramLongPollingBot {
     final BotConfig botConfig;
-    final Map<String, String> chatIdAndUserMessage;
+    final Map<String, String> cacheChatIdAndUserCommandMessage;
     final ClipsController clipsController;
 
     @Override
@@ -42,12 +42,12 @@ public class TelegramBot extends TelegramLongPollingBot {
 
             if (botConfig.getCommands().containsKey(userMessageText)) {
                 var response = botConfig.getCommands().get(userMessageText).firstMessage(update);
-                chatIdAndUserMessage.put(chatId, userMessageText);
+                cacheChatIdAndUserCommandMessage.put(chatId, userMessageText);
                 sendAnswerMessage(response);
 
-            } else if (chatIdAndUserMessage.containsKey(chatId)) {
-                var response = botConfig.getCommands().get(chatIdAndUserMessage.get(chatId)).secondMessage(update);
-                chatIdAndUserMessage.remove(chatId);
+            } else if (cacheChatIdAndUserCommandMessage.containsKey(chatId)) {
+                var response = botConfig.getCommands().get(cacheChatIdAndUserCommandMessage.get(chatId)).secondMessage(update);
+                cacheChatIdAndUserCommandMessage.remove(chatId);
                 sendAnswerMessage(response);
 
             } else {

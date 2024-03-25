@@ -1,21 +1,9 @@
 package com.alexlatkin.twitchclipsbot.model.dto;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.Data;
 
 import java.util.ArrayList;
-
-@Getter
-@Setter
-@NoArgsConstructor
+@Data
 public class RootTwitchUser {
     public ArrayList<TwitchUser> data;
-
-    @Override
-    public String toString() {
-        return "RootTwitchUser{" +
-                "data=" + data +
-                '}';
-    }
 }

@@ -1,28 +1,13 @@
 package com.alexlatkin.twitchclipsbot.model.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import lombok.*;
+import lombok.Data;
 
+import java.io.Serializable;
 import java.util.List;
 
-@Getter
-@Setter
+@Data
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class TwitchClipsDto {
-
+public class TwitchClipsDto implements Serializable {
     private List<TwitchClip> data;
-
-    public TwitchClipsDto() {
-    }
-
-    public TwitchClipsDto(List<TwitchClip> twitchClips) {
-        this.data = twitchClips;
-    }
-
-    @Override
-    public String toString() {
-        return "TwitchClipsDto{" +
-                "videoClips=" + data +
-                '}';
-    }
 }

@@ -1,25 +1,27 @@
 package com.alexlatkin.twitchclipsbot.controller;
 
 import com.alexlatkin.twitchclipsbot.config.BotConfig;
-import com.alexlatkin.twitchclipsbot.service.ClipService;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
+import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
-import java.io.IOException;
-import java.net.URISyntaxException;
+import java.util.Map;
 
-@Component
+@Getter
+@Setter
 @AllArgsConstructor
+@Component
 public class TelegramBot extends TelegramLongPollingBot {
-
     final BotConfig botConfig;
-//    final ClipsController clipsController;
-
-    final ClipService clipService;
+    final Map<String, String> cacheChatIdAndUserCommandMessage;
+    final ClipsController clipsController;
 
     @Override
     public String getBotUsername() {
@@ -34,75 +36,61 @@ public class TelegramBot extends TelegramLongPollingBot {
     @Override
     public void onUpdateReceived(Update update) {
 
-            var message = update.getMessage();
+        if (update.hasMessage()) {
+            var userMessageText = update.getMessage().getText();
+            var chatId = update.getMessage().getChatId().toString();
 
-            var response = new SendMessage();
+            if (botConfig.getTelegramCommands().getTextCommands().containsKey(userMessageText)) {
+                var response = botConfig.getTelegramCommands().getTextCommands().get(userMessageText).firstMessage(update);
+                cacheChatIdAndUserCommandMessage.put(chatId, userMessageText);
+                sendAnswerMessage(response);
 
-            response.setChatId(message.getChatId().toString());
+            } else if (cacheChatIdAndUserCommandMessage.containsKey(chatId)) {
+                var response = botConfig.getTelegramCommands().getTextCommands().get(cacheChatIdAndUserCommandMessage.get(chatId)).secondMessage(update);
+                cacheChatIdAndUserCommandMessage.remove(chatId);
+                sendAnswerMessage(response);
 
-            if (message.getText().contains("/game_clips")) {
-                var gameName = message.getText().substring(11);
-
-                String clips = null;
-                try {
-                    clips = clipService.getClipsByGameName(gameName).getData().get(0).getUrl();
-                } catch (URISyntaxException e) {
-                    throw new RuntimeException(e);
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
-
-                response.setText(clips);
-
+            } else {
+                var response = new SendMessage();
+                response.setChatId(chatId);
+                response.setText("Command not required");
                 sendAnswerMessage(response);
             }
 
+        } else if (update.hasCallbackQuery()) {
 
+            var chatId = update.getCallbackQuery().getMessage().getChatId();
+            var buttonKey = update.getCallbackQuery().getData();
 
+            if (botConfig.getTelegramCommands().getFollowButtonCommands().containsKey(buttonKey)) {
+                EditMessageText responseInCurrentMessage = new EditMessageText();
+                responseInCurrentMessage.setChatId(chatId);
+                responseInCurrentMessage.setMessageId(update.getCallbackQuery().getMessage().getMessageId());
+                responseInCurrentMessage.setText(botConfig.getTelegramCommands().getFollowButtonCommands().get(buttonKey).clickFollowButton(update));
+                sendAnswerMessage(responseInCurrentMessage);
 
-            switch (message.getText()) {
-                case "/start":
-                            response.setText("Hello");
-                            sendAnswerMessage(response);
-                            break;
-                case "/help":
-                            response.setText("some text");
-                            sendAnswerMessage(response);
-                            break;
-//                case "/game_clips":
-//                    try {
-//                        response.setText(clipsController.getClipsByGameName(update.getMessage().getText()).getData().get(0).getUrl());
-//                    } catch (URISyntaxException e) {
-//                        throw new RuntimeException(e);
-//                    } catch (IOException e) {
-//                        throw new RuntimeException(e);
-//                    } catch (InterruptedException e) {
-//                        throw new RuntimeException(e);
-//                    }
-//                    sendAnswerMessage(response);
-//                            break;
-                default:
-                            response.setText("Команда не поддерживается");
-                            sendAnswerMessage(response);
+            } else if (botConfig.getTelegramCommands().getBlockButtonCommands().containsKey(buttonKey)) {
+                EditMessageText responseInCurrentMessage = new EditMessageText();
+                responseInCurrentMessage.setChatId(chatId);
+                responseInCurrentMessage.setMessageId(update.getCallbackQuery().getMessage().getMessageId());
+                responseInCurrentMessage.setText(botConfig.getTelegramCommands().getBlockButtonCommands().get(buttonKey).clickBlockButton(update));
+                sendAnswerMessage(responseInCurrentMessage);
+
+            } else if (botConfig.getTelegramCommands().getNextButtonCommands().containsKey(buttonKey)) {
+                var response = new SendMessage();
+                response.setChatId(chatId);
+                response.setText(botConfig.getTelegramCommands().getNextButtonCommands().get(buttonKey).clickNextButton(update));
+                sendAnswerMessage(response);
             }
-
-
-
+        }
     }
 
-    private void sendAnswerMessage(SendMessage message) {
-        if(message != null)
+    private void sendAnswerMessage(BotApiMethod message) {
         try {
             execute(message);
         } catch (TelegramApiException e) {
             throw new RuntimeException(e);
         }
     }
-
-
-
-
 
 }

@@ -1,8 +1,10 @@
 package com.alexlatkin.twitchclipsbot.twitchAPI;
 
+import com.alexlatkin.twitchclipsbot.config.TwitchConfig;
 import com.alexlatkin.twitchclipsbot.model.dto.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.AllArgsConstructor;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
@@ -17,28 +19,26 @@ import java.time.Duration;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
+@AllArgsConstructor
 @Service
 public class TwitchServiceImpl implements TwitchService {
-    private static final String URL = "https://api.twitch.tv/helix/";
-    private String path;
-    private static final String FIRST_HEADER_NAME = "Authorization";
-    private static final String FIRST_HEADER_VALUE = "Bearer u78uni2ggpp350gqsdk9s0n6jd3gzg";
-    private static final String SECOND_HEADER_NAME = "Client-Id";
-    private static final String SECOND_HEADER_VALUE = "kuwtiwhhj9q8stp6yvjo4cxp866xf4";
+
+    private final TwitchConfig twitchConfig;
 
     @Override
     public TwitchGameDto getGame(String gameName) throws URISyntaxException, IOException, InterruptedException {
-        path = "games?name=" + gameName.replace(" ", "%20");
 
-        var uri = new URI(URL + path);
+        String path = "games?name=" + gameName.replace(" ", "%20");
+
+        var uri = new URI(twitchConfig.getUrl() + path);
 
         var client = HttpClient.newHttpClient();
 
         var request = HttpRequest.newBuilder()
                 .GET()
                 .uri(uri)
-                .header(FIRST_HEADER_NAME, FIRST_HEADER_VALUE)
-                .header(SECOND_HEADER_NAME, SECOND_HEADER_VALUE)
+                .header(twitchConfig.getFirstHeaderName(),"Bearer " + twitchConfig.getFirstHeaderValue())
+                .header(twitchConfig.getSecondHeaderName(), twitchConfig.getSecondHeaderValue())
                 .timeout(Duration.ofSeconds(20))
                 .build();
 
@@ -53,17 +53,18 @@ public class TwitchServiceImpl implements TwitchService {
 
     @Override
     public TwitchUser getBroadcaster(String broadcasterName) throws URISyntaxException, IOException, InterruptedException {
-        path = "users?login=" + broadcasterName;
 
-        var uri = new URI(URL + path);
+        String path = "users?login=" + broadcasterName;
+
+        var uri = new URI(twitchConfig.getUrl() + path);
 
         var client = HttpClient.newHttpClient();
 
         var request = HttpRequest.newBuilder()
                 .GET()
                 .uri(uri)
-                .header(FIRST_HEADER_NAME, FIRST_HEADER_VALUE)
-                .header(SECOND_HEADER_NAME, SECOND_HEADER_VALUE)
+                .header(twitchConfig.getFirstHeaderName(),"Bearer " + twitchConfig.getFirstHeaderValue())
+                .header(twitchConfig.getSecondHeaderName(), twitchConfig.getSecondHeaderValue())
                 .timeout(Duration.ofSeconds(20))
                 .build();
 
@@ -80,17 +81,17 @@ public class TwitchServiceImpl implements TwitchService {
     public TwitchClipsDto getClipsByGameId(int gameId, String date) throws IOException, InterruptedException, URISyntaxException {
         String clipDate = date + "T00:00:00%2B03:00";
 
-       path ="clips?game_id=" + gameId + "&started_at=" + clipDate + "&first=100";
+        String path ="clips?game_id=" + gameId + "&started_at=" + clipDate + "&first=100";
 
-        var uri = new URI(URL + path);
+        var uri = new URI(twitchConfig.getUrl() + path);
 
         var client = HttpClient.newHttpClient();
 
         var request = HttpRequest.newBuilder()
                 .GET()
                 .uri(uri)
-                .header(FIRST_HEADER_NAME, FIRST_HEADER_VALUE)
-                .header(SECOND_HEADER_NAME, SECOND_HEADER_VALUE)
+                .header(twitchConfig.getFirstHeaderName(),"Bearer " + twitchConfig.getFirstHeaderValue())
+                .header(twitchConfig.getSecondHeaderName(), twitchConfig.getSecondHeaderValue())
                 .timeout(Duration.ofSeconds(20))
                 .build();
 
@@ -105,20 +106,20 @@ public class TwitchServiceImpl implements TwitchService {
 
     @Override
     @Async
-    public CompletableFuture<String> getClipsByBroadcasterName(int broadcasterId, String date) throws ExecutionException, InterruptedException, JsonProcessingException, URISyntaxException {
+    public CompletableFuture<String> getClipsByBroadcastersId(int broadcasterId, String date) throws ExecutionException, InterruptedException, JsonProcessingException, URISyntaxException {
         String clipDate = date + "T00:00:00%2B03:00";
 
-        path ="clips?broadcaster_id=" + broadcasterId + "&started_at=" + clipDate;
+        String path ="clips?broadcaster_id=" + broadcasterId + "&started_at=" + clipDate;
 
-        var uri = new URI(URL + path);
+        var uri = new URI(twitchConfig.getUrl() + path);
 
         var client = HttpClient.newHttpClient();
 
         var request = HttpRequest.newBuilder()
                 .GET()
                 .uri(uri)
-                .header(FIRST_HEADER_NAME, FIRST_HEADER_VALUE)
-                .header(SECOND_HEADER_NAME, SECOND_HEADER_VALUE)
+                .header(twitchConfig.getFirstHeaderName(),"Bearer " + twitchConfig.getFirstHeaderValue())
+                .header(twitchConfig.getSecondHeaderName(), twitchConfig.getSecondHeaderValue())
                 .timeout(Duration.ofSeconds(20))
                 .build();
 
@@ -129,20 +130,20 @@ public class TwitchServiceImpl implements TwitchService {
     }
 
     @Override
-    public TwitchClipsDto getClipsByBroadcasterNameTest(int broadcasterId, String date) throws URISyntaxException, IOException, InterruptedException {
+    public TwitchClipsDto getClipsByBroadcasterId(int broadcasterId, String date) throws URISyntaxException, IOException, InterruptedException {
         String clipDate = date + "T00:00:00%2B03:00";
 
-        path ="clips?broadcaster_id=" + broadcasterId + "&started_at=" + clipDate;
+        String path ="clips?broadcaster_id=" + broadcasterId + "&started_at=" + clipDate;
 
-        var uri = new URI(URL + path);
+        var uri = new URI(twitchConfig.getUrl() + path);
 
         var client = HttpClient.newHttpClient();
 
         var request = HttpRequest.newBuilder()
                 .GET()
                 .uri(uri)
-                .header(FIRST_HEADER_NAME, FIRST_HEADER_VALUE)
-                .header(SECOND_HEADER_NAME, SECOND_HEADER_VALUE)
+                .header(twitchConfig.getFirstHeaderName(),"Bearer " + twitchConfig.getFirstHeaderValue())
+                .header(twitchConfig.getSecondHeaderName(), twitchConfig.getSecondHeaderValue())
                 .timeout(Duration.ofSeconds(20))
                 .build();
 

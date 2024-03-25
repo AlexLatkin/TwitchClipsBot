@@ -21,13 +21,12 @@ public class ClipsController {
         return clipService.getClipsByGameName(gameName);
     }
 
-    public List<TwitchClipsDto> getClipsByBroadcasterName() throws URISyntaxException, IOException, InterruptedException {
-        return clipService.getClipsByBroadcasterNameTest();
+    public TwitchClipsDto getClipsByBroadcasterName(String broadcasterName) throws URISyntaxException, IOException, InterruptedException {
+        return clipService.getClipsByBroadcasterName(broadcasterName);
     }
 
+//    public List<CompletableFuture<String>> getClipsByBroadcasterNameV2(String broadcasterName) throws URISyntaxException, IOException, ExecutionException, InterruptedException {
+//        return clipService.getClipsByBroadcasterName(broadcasterName);
+//    }
 
-
-    public List<CompletableFuture<String>> getClipsByBroadcasterNameV2() throws URISyntaxException, IOException, ExecutionException, InterruptedException {
-        return clipService.getClipsByBroadcasterName();
-    }
 }

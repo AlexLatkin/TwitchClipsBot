@@ -7,9 +7,7 @@ import com.alexlatkin.twitchclipsbot.controller.TelegramBot;
 import com.alexlatkin.twitchclipsbot.controller.UserController;
 import com.alexlatkin.twitchclipsbot.model.entity.Broadcaster;
 import com.alexlatkin.twitchclipsbot.telegramBotCommands.buttonCommands.BlockButtonCommand;
-import com.alexlatkin.twitchclipsbot.telegramBotCommands.buttonCommands.ButtonCommands;
 import com.alexlatkin.twitchclipsbot.telegramBotCommands.buttonCommands.FollowButtonCommand;
-import com.alexlatkin.twitchclipsbot.telegramBotCommands.buttonCommands.commandsWIthAnswer.ButtonCommandsWithAnswer;
 import com.alexlatkin.twitchclipsbot.telegramBotCommands.buttonCommands.commandsWIthAnswer.NextClipButtonCommand;
 import com.alexlatkin.twitchclipsbot.telegramBotCommands.textCommands.*;
 import lombok.RequiredArgsConstructor;
@@ -27,32 +25,45 @@ import java.util.Map;
 public class BotInitializer {
     final TelegramBot telegramBot;
     final BotConfig botConfig;
+    final TelegramCommands telegramCommands;
+    final FollowButtonCommand followButtonCommand;
+    final BlockButtonCommand blockButtonCommand;
+    final NextClipButtonCommand nextClipButtonCommand;
     final ClipsController clipsController;
     final UserController userController;
     final BroadcasterController broadcasterController;
-    final FollowButtonCommand followButtonCommand;
     @EventListener({ContextRefreshedEvent.class})
     public void init() throws TelegramApiException {
         TelegramBotsApi telegramBotsApi = new TelegramBotsApi(DefaultBotSession.class);
 
-        GameClipsCommand gameClipsCommand = new GameClipsCommand(clipsController, followButtonCommand, new Broadcaster());
+        GameClipsCommand gameClipsCommand = new GameClipsCommand(clipsController, new Broadcaster()
+                                                                , followButtonCommand, blockButtonCommand, nextClipButtonCommand);
 
-        Map<String, BotCommands> commands = Map.of("/start", new RegisterCommand(userController)
+        CasterClipsCommand casterClipsCommand = new CasterClipsCommand(clipsController, new Broadcaster()
+                                                                    , followButtonCommand, blockButtonCommand, nextClipButtonCommand);
+
+        Map<String, BotCommands> textCommands = Map.of("/start", new RegisterCommand(userController)
                                                     ,"/help", new HelpCommand(userController, broadcasterController)
                                                     ,"/game_clips", gameClipsCommand
-                                                    ,"/caster_clips", new CasterClipsCommand(clipsController)
+                                                    ,"/caster_clips", casterClipsCommand
                                                     ,"/follow_list_clips", new FollowListClipsCommand()
                                                     ,"/follow_list", new FollowListCommand(userController)
                                                     ,"/black_list", new BlackListCommand(userController));
 
-        Map<String, ButtonCommands> buttonCommands = Map.of("FOLLOW", new FollowButtonCommand(userController, broadcasterController)
-                                                            ,"BLOCK", new BlockButtonCommand());
+        Map<String, BotButtonCommands> followCommands = Map.of("GAME_CLIPS_FOLLOW", gameClipsCommand
+                                                        ,"CASTER_CLIPS_FOLLOW", casterClipsCommand);
 
-        Map<String, ButtonCommandsWithAnswer> buttonCommandsWithAnswer = Map.of("NEXT", new NextClipButtonCommand());
+        Map<String, BotButtonCommands> blockCommands = Map.of("GAME_CLIPS_BLOCK", gameClipsCommand
+                                                       ,"CASTER_CLIPS_BLOCK", casterClipsCommand);
 
-        botConfig.setCommands(commands);
-        botConfig.setButtonCommands(buttonCommands);
-        botConfig.setButtonCommandsWithAnswer(buttonCommandsWithAnswer);
+        Map<String, BotButtonCommands> nextCommands = Map.of("GAME_CLIPS_NEXT", gameClipsCommand
+                                                      ,"CASTER_CLIPS_NEXT", casterClipsCommand);
+
+        telegramCommands.setTextCommands(textCommands);
+        telegramCommands.setFollowButtonCommands(followCommands);
+        telegramCommands.setBlockButtonCommands(blockCommands);
+        telegramCommands.setNextButtonCommands(nextCommands);
+        botConfig.setTelegramCommands(telegramCommands);
         telegramBotsApi.registerBot(telegramBot);
     }
 

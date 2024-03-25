@@ -19,7 +19,5 @@ public class BotConfig {
     private String name;
     @Value("${bot.token}")
     private String token;
-    private Map<String, BotCommands> commands;
-    private Map<String, ButtonCommands> buttonCommands;
-    private Map<String, ButtonCommandsWithAnswer> buttonCommandsWithAnswer;
+    private TelegramCommands telegramCommands;
 }

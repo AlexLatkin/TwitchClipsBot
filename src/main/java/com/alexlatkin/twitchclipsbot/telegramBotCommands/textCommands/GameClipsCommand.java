@@ -3,7 +3,10 @@ package com.alexlatkin.twitchclipsbot.telegramBotCommands.textCommands;
 import com.alexlatkin.twitchclipsbot.controller.ClipsController;
 import com.alexlatkin.twitchclipsbot.model.dto.TwitchClip;
 import com.alexlatkin.twitchclipsbot.model.entity.Broadcaster;
+import com.alexlatkin.twitchclipsbot.telegramBotCommands.buttonCommands.BlockButtonCommand;
 import com.alexlatkin.twitchclipsbot.telegramBotCommands.buttonCommands.ButtonCommands;
+import com.alexlatkin.twitchclipsbot.telegramBotCommands.buttonCommands.FollowButtonCommand;
+import com.alexlatkin.twitchclipsbot.telegramBotCommands.buttonCommands.commandsWIthAnswer.NextClipButtonCommand;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
@@ -18,10 +21,12 @@ import java.util.ArrayList;
 import java.util.List;
 @Getter
 @AllArgsConstructor
-public class GameClipsCommand implements BotCommands {
+public class GameClipsCommand implements BotButtonCommands {
     ClipsController clipsController;
-    ButtonCommands buttonCommands;
     Broadcaster broadcaster;
+    FollowButtonCommand followButtonCommand;
+    BlockButtonCommand blockButtonCommand;
+    NextClipButtonCommand nextClipButtonCommand;
     @Override
     public BotApiMethod firstMessage(Update update) {
         var chatId = update.getMessage().getChatId().toString();
@@ -78,6 +83,21 @@ public class GameClipsCommand implements BotCommands {
         return msg;
     }
 
+    @Override
+    public String clickFollowButton(Update update) {
+        return followButtonCommand.actionButtonInCurrentMessage(update, broadcaster);
+    }
+
+    @Override
+    public String clickBlockButton(Update update) {
+        return blockButtonCommand.actionButtonInCurrentMessage(update, broadcaster);
+    }
+
+    @Override
+    public String clickNextButton(Update update) {
+        return nextClipButtonCommand.actionWithMessage(update);
+    }
+
     public InlineKeyboardMarkup gameClipsCommandKeyboard(String casterName) {
 
         InlineKeyboardMarkup markupInLine = new InlineKeyboardMarkup();
@@ -87,15 +107,15 @@ public class GameClipsCommand implements BotCommands {
 
         var followButton = new InlineKeyboardButton();
         followButton.setText("Подписаться на " + casterName);
-        followButton.setCallbackData("FOLLOW");
+        followButton.setCallbackData("GAME_CLIPS_FOLLOW");
 
         var blockButton = new InlineKeyboardButton();
         blockButton.setText("Скрыть " + casterName);
-        blockButton.setCallbackData("BLOCK");
+        blockButton.setCallbackData("GAME_CLIPS_BLOCK");
 
         var nextClipButton = new InlineKeyboardButton();
         nextClipButton.setText("Следующий клип");
-        nextClipButton.setCallbackData("NEXT");
+        nextClipButton.setCallbackData("GAME_CLIPS_NEXT");
 
         buttonLine.add(followButton);
         buttonLine.add(blockButton);

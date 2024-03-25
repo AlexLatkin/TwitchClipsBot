@@ -40,13 +40,13 @@ public class TelegramBot extends TelegramLongPollingBot {
             var userMessageText = update.getMessage().getText();
             var chatId = update.getMessage().getChatId().toString();
 
-            if (botConfig.getCommands().containsKey(userMessageText)) {
-                var response = botConfig.getCommands().get(userMessageText).firstMessage(update);
+            if (botConfig.getTelegramCommands().getTextCommands().containsKey(userMessageText)) {
+                var response = botConfig.getTelegramCommands().getTextCommands().get(userMessageText).firstMessage(update);
                 cacheChatIdAndUserCommandMessage.put(chatId, userMessageText);
                 sendAnswerMessage(response);
 
             } else if (cacheChatIdAndUserCommandMessage.containsKey(chatId)) {
-                var response = botConfig.getCommands().get(cacheChatIdAndUserCommandMessage.get(chatId)).secondMessage(update);
+                var response = botConfig.getTelegramCommands().getTextCommands().get(cacheChatIdAndUserCommandMessage.get(chatId)).secondMessage(update);
                 cacheChatIdAndUserCommandMessage.remove(chatId);
                 sendAnswerMessage(response);
 
@@ -62,17 +62,24 @@ public class TelegramBot extends TelegramLongPollingBot {
             var chatId = update.getCallbackQuery().getMessage().getChatId();
             var buttonKey = update.getCallbackQuery().getData();
 
-            if (botConfig.getButtonCommands().containsKey(buttonKey)) {
+            if (botConfig.getTelegramCommands().getFollowButtonCommands().containsKey(buttonKey)) {
                 EditMessageText responseInCurrentMessage = new EditMessageText();
                 responseInCurrentMessage.setChatId(chatId);
                 responseInCurrentMessage.setMessageId(update.getCallbackQuery().getMessage().getMessageId());
-                responseInCurrentMessage.setText(botConfig.getButtonCommands().get(buttonKey).actionButtonInCurrentMessage(update));
+                responseInCurrentMessage.setText(botConfig.getTelegramCommands().getFollowButtonCommands().get(buttonKey).clickFollowButton(update));
                 sendAnswerMessage(responseInCurrentMessage);
 
-            } else if (botConfig.getButtonCommandsWithAnswer().containsKey(buttonKey)) {
+            } else if (botConfig.getTelegramCommands().getBlockButtonCommands().containsKey(buttonKey)) {
+                EditMessageText responseInCurrentMessage = new EditMessageText();
+                responseInCurrentMessage.setChatId(chatId);
+                responseInCurrentMessage.setMessageId(update.getCallbackQuery().getMessage().getMessageId());
+                responseInCurrentMessage.setText(botConfig.getTelegramCommands().getBlockButtonCommands().get(buttonKey).clickBlockButton(update));
+                sendAnswerMessage(responseInCurrentMessage);
+
+            } else if (botConfig.getTelegramCommands().getNextButtonCommands().containsKey(buttonKey)) {
                 var response = new SendMessage();
                 response.setChatId(chatId);
-                response.setText(botConfig.getButtonCommandsWithAnswer().get(buttonKey).actionWithMessage(update));
+                response.setText(botConfig.getTelegramCommands().getNextButtonCommands().get(buttonKey).clickNextButton(update));
                 sendAnswerMessage(response);
             }
         }

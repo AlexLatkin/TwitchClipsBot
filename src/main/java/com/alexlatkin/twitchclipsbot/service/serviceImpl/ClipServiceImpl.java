@@ -1,12 +1,16 @@
 package com.alexlatkin.twitchclipsbot.service.serviceImpl;
 
+import com.alexlatkin.twitchclipsbot.model.dto.TwitchClip;
 import com.alexlatkin.twitchclipsbot.model.dto.TwitchClipsDto;
 import com.alexlatkin.twitchclipsbot.model.entity.Broadcaster;
+import com.alexlatkin.twitchclipsbot.model.entity.Game;
 import com.alexlatkin.twitchclipsbot.service.BroadcasterService;
 import com.alexlatkin.twitchclipsbot.service.ClipService;
 import com.alexlatkin.twitchclipsbot.service.GameService;
 import com.alexlatkin.twitchclipsbot.twitchAPI.TwitchService;
+import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -16,6 +20,7 @@ import java.net.URISyntaxException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
@@ -40,74 +45,43 @@ public class ClipServiceImpl implements ClipService {
             gameId = gameService.getGameByGameName(gameName).getGameId();
         } else {
             gameId = twitchService.getGame(gameName).getId();
-            gameService.addGame(gameId, gameName);
+            Game game = new Game();
+            game.setGameName(gameName);
+            game.setGameId(gameId);
+            gameService.addGame(game);
         }
 
         return twitchService.getClipsByGameId(gameId, date);
     }
 
-    @Override
-    public List<CompletableFuture<String>> getClipsByUserFollowList(List<Broadcaster> userFollowList) throws URISyntaxException, IOException, InterruptedException, ExecutionException {
-        LocalDate localDate = LocalDate.now();
-        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        String date = localDate.format(dateTimeFormatter);
-
-        var broadcasterId2 = twitchService.getBroadcaster("madarapoe").getId();
-        var broadcasterId3 = twitchService.getBroadcaster("mariachi").getId();
-
-        List<Integer> list = new ArrayList<>();
-        list.add(broadcasterId3);
-        list.add(broadcasterId2);
-        list.add(broadcasterId2);
-        list.add(broadcasterId2);
-        list.add(broadcasterId2);
-        list.add(broadcasterId2);
-        list.add(broadcasterId2);
-        list.add(broadcasterId2);
-        list.add(broadcasterId2);
-        list.add(broadcasterId2);
-        list.add(broadcasterId2);
-        list.add(broadcasterId2);
-        list.add(broadcasterId2);
-        list.add(broadcasterId2);
-        list.add(broadcasterId2);
-        list.add(broadcasterId2);
-        list.add(broadcasterId2);
-        list.add(broadcasterId2);
-        list.add(broadcasterId2);
-        list.add(broadcasterId2);
-
-        List<CompletableFuture<String>> allClips = new ArrayList<>();
-
-        long startTime = System.nanoTime();
-
-
-        list.stream().forEach(bcID -> {
-            try {
-                allClips.add(twitchService.getClipsByBroadcastersId(bcID, date));
-            } catch (ExecutionException e) {
-                throw new RuntimeException(e);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            } catch (JsonProcessingException e) {
-                throw new RuntimeException(e);
-            } catch (URISyntaxException e) {
-                throw new RuntimeException(e);
-            }
-        });
-
-
-        long endTime = System.nanoTime();
-
-        long duration = (endTime - startTime);
-
-        System.out.println(duration);
-
-
-        CompletableFuture.allOf(allClips.toArray(new CompletableFuture[0])).get();
-
-        return allClips;
-    }
+//    @Override
+//    public List<CompletableFuture<String>> getClipsByUserFollowList(List<Broadcaster> userFollowList) throws URISyntaxException, IOException, InterruptedException, ExecutionException {
+//        LocalDate localDate = LocalDate.now();
+//        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+//        String date = localDate.format(dateTimeFormatter);
+//
+//        List<CompletableFuture<String>> allClips = new ArrayList<>();
+//
+//        var broadcastersId = userFollowList.stream().map(Broadcaster::getBroadcasterId).toList();
+//
+//        broadcastersId.forEach(bcId -> {
+//            try {
+//                allClips.add(twitchService.getClipsByBroadcastersId(bcId, date));
+//            } catch (ExecutionException e) {
+//                throw new RuntimeException(e);
+//            } catch (InterruptedException e) {
+//                throw new RuntimeException(e);
+//            } catch (IOException e) {
+//                throw new RuntimeException(e);
+//            } catch (URISyntaxException e) {
+//                throw new RuntimeException(e);
+//            }
+//        });
+//
+//        CompletableFuture.allOf(allClips.toArray(new CompletableFuture[0])).get();
+//
+//        return allClips;
+//    }
 
     @Override
     public TwitchClipsDto getClipsByBroadcasterName(String broadcasterName) throws URISyntaxException, IOException, InterruptedException {
@@ -129,5 +103,10 @@ public class ClipServiceImpl implements ClipService {
         }
 
         return twitchService.getClipsByBroadcasterId(broadcasterId, date);
+    }
+
+    @Override
+    public CompletableFuture<TwitchClipsDto> test(int bcId, String date) throws IOException, URISyntaxException, ExecutionException, InterruptedException {
+        return twitchService.getClipsByBroadcastersId(bcId, date);
     }
 }

@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class GameController {
     private final GameService gameService;
 
-    public void addGameByIdAndName(Integer gameId, String gameName) {
-        gameService.addGame(gameId, gameName);
+    public void addGameByIdAndName(Game game) {
+        gameService.addGame(game);
     }
     public Game getGameByGameName(String gameName) {
         return gameService.getGameByGameName(gameName);

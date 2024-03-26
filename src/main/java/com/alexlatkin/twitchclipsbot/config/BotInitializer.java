@@ -43,10 +43,10 @@ public class BotInitializer {
                                                                     , followButtonCommand, blockButtonCommand, nextClipButtonCommand);
 
         Map<String, BotCommands> textCommands = Map.of("/start", new RegisterCommand(userController)
-                                                    ,"/help", new HelpCommand(userController, broadcasterController)
+                                                    ,"/help", new HelpCommand(userController, broadcasterController, clipsController)
                                                     ,"/game_clips", gameClipsCommand
                                                     ,"/caster_clips", casterClipsCommand
-                                                    ,"/follow_list_clips", new FollowListClipsCommand()
+                                                    ,"/follow_list_clips", new FollowListClipsCommand(userController, clipsController)
                                                     ,"/follow_list", new FollowListCommand(userController)
                                                     ,"/black_list", new BlackListCommand(userController));
 

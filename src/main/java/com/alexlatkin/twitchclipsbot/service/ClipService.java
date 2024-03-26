@@ -12,7 +12,8 @@ import java.util.concurrent.ExecutionException;
 
 public interface ClipService {
     TwitchClipsDto getClipsByGameName(String gameName) throws URISyntaxException, IOException, InterruptedException;
-    List<CompletableFuture<String>> getClipsByUserFollowList(List<Broadcaster> userFollowList) throws URISyntaxException, IOException, InterruptedException, ExecutionException;
+//    List<CompletableFuture<String>> getClipsByUserFollowList(List<Broadcaster> userFollowList) throws URISyntaxException, IOException, InterruptedException, ExecutionException;
     TwitchClipsDto getClipsByBroadcasterName(String broadcasterName) throws URISyntaxException, IOException, InterruptedException;
 
+    CompletableFuture<TwitchClipsDto> test(int bcId, String date) throws IOException, URISyntaxException, ExecutionException, InterruptedException;
 }

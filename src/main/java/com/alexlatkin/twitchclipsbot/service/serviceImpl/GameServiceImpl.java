@@ -5,26 +5,25 @@ import com.alexlatkin.twitchclipsbot.model.repository.GameRepository;
 import com.alexlatkin.twitchclipsbot.service.GameService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 @Service
 public class GameServiceImpl implements GameService {
     private final GameRepository gameRepository;
+    @Transactional
     @Override
     public boolean existsGameByGameName(String gameName) {
         return gameRepository.existsGameByGameName(gameName);
     }
-
+    @Transactional
     @Override
     public Game getGameByGameName(String gameName) {
         return gameRepository.findGameByGameName(gameName);
     }
-
+    @Transactional
     @Override
-    public void addGame(Integer gameId,String gameName) {
-        Game game = new Game();
-        game.setGameId(gameId);
-        game.setGameName(gameName);
+    public void addGame(Game game) {
         gameRepository.save(game);
     }
 }

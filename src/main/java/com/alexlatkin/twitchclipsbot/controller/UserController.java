@@ -1,6 +1,7 @@
 package com.alexlatkin.twitchclipsbot.controller;
 
 import com.alexlatkin.twitchclipsbot.model.entity.Broadcaster;
+import com.alexlatkin.twitchclipsbot.model.entity.User;
 import com.alexlatkin.twitchclipsbot.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,8 +17,8 @@ public class UserController {
        return userService.existsUserByChatId(chatId);
     }
 
-    public void addUser(Long chatId, String userName) {
-        userService.addUser(chatId, userName);
+    public void addUser(User user) {
+        userService.addUser(user);
     }
 
     public void addBroadcasterInUserFollowList(Long userId, Broadcaster broadcaster) {

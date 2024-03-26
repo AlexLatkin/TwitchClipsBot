@@ -1,6 +1,7 @@
 package com.alexlatkin.twitchclipsbot.controller;
 
 import com.alexlatkin.twitchclipsbot.model.dto.TwitchClipsDto;
+import com.alexlatkin.twitchclipsbot.model.entity.Broadcaster;
 import com.alexlatkin.twitchclipsbot.service.ClipService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RestController;
@@ -25,8 +26,11 @@ public class ClipsController {
         return clipService.getClipsByBroadcasterName(broadcasterName);
     }
 
-//    public List<CompletableFuture<String>> getClipsByBroadcasterNameV2(String broadcasterName) throws URISyntaxException, IOException, ExecutionException, InterruptedException {
-//        return clipService.getClipsByBroadcasterName(broadcasterName);
+//    public List<TwitchClipsDto> getClipsByUserFollowList(List<Broadcaster> userFollowList) throws URISyntaxException, IOException, ExecutionException, InterruptedException {
+//        return clipService.getClipsByUserFollowList(userFollowList);
 //    }
 
+    public CompletableFuture<TwitchClipsDto> test(int bcId, String date) throws IOException, URISyntaxException, ExecutionException, InterruptedException {
+        return clipService.test(bcId, date);
+    }
 }

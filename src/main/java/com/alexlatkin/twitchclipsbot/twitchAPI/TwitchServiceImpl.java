@@ -1,5 +1,6 @@
 package com.alexlatkin.twitchclipsbot.twitchAPI;
 
+import aj.org.objectweb.asm.TypeReference;
 import com.alexlatkin.twitchclipsbot.config.TwitchConfig;
 import com.alexlatkin.twitchclipsbot.model.dto.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -8,6 +9,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
+import java.io.DataInput;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -106,7 +108,7 @@ public class TwitchServiceImpl implements TwitchService {
 
     @Override
     @Async
-    public CompletableFuture<String> getClipsByBroadcastersId(int broadcasterId, String date) throws ExecutionException, InterruptedException, JsonProcessingException, URISyntaxException {
+    public CompletableFuture<TwitchClipsDto> getClipsByBroadcastersId(int broadcasterId, String date) throws ExecutionException, InterruptedException, IOException, URISyntaxException {
         String clipDate = date + "T00:00:00%2B03:00";
 
         String path ="clips?broadcaster_id=" + broadcasterId + "&started_at=" + clipDate;
@@ -126,7 +128,11 @@ public class TwitchServiceImpl implements TwitchService {
         var response = client.sendAsync(request, HttpResponse.BodyHandlers.ofString(StandardCharsets.UTF_8))
                 .thenApply(HttpResponse::body);
 
-        return response;
+        var twitchClipsDtoCompletableFuture = response.thenApply(TwitchClipsDto::parser);
+
+        System.out.println(twitchClipsDtoCompletableFuture.get());
+
+        return twitchClipsDtoCompletableFuture;
     }
 
     @Override

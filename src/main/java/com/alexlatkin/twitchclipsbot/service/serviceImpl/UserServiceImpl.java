@@ -22,10 +22,7 @@ public class UserServiceImpl implements UserService {
     }
     @Transactional
     @Override
-    public void addUser(Long chatId, String userName) {
-        User user = new User();
-        user.setChatId(chatId);
-        user.setUserName(userName);
+    public void addUser(User user) {
         userRepository.save(user);
     }
 

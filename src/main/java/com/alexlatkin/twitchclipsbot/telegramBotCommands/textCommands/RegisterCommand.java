@@ -1,6 +1,7 @@
 package com.alexlatkin.twitchclipsbot.telegramBotCommands.textCommands;
 
 import com.alexlatkin.twitchclipsbot.controller.UserController;
+import com.alexlatkin.twitchclipsbot.model.entity.User;
 import lombok.AllArgsConstructor;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -16,7 +17,10 @@ public class RegisterCommand implements BotCommands {
 
         if (!userController.existsUserByChatId(chatId)) {
             var userName = update.getMessage().getChat().getFirstName();
-            userController.addUser(chatId, userName);
+            User user = new User();
+            user.setChatId(chatId);
+            user.setUserName(userName);
+            userController.addUser(user);
         }
 
         var chatIdString = chatId.toString();

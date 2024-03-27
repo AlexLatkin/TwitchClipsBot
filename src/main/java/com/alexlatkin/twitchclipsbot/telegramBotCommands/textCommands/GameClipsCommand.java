@@ -27,6 +27,7 @@ public class GameClipsCommand implements BotButtonCommands {
     FollowButtonCommand followButtonCommand;
     BlockButtonCommand blockButtonCommand;
     NextClipButtonCommand nextClipButtonCommand;
+    List<TwitchClip> clipList;
     @Override
     public BotApiMethod firstMessage(Update update) {
         var chatId = update.getMessage().getChatId().toString();
@@ -44,10 +45,8 @@ public class GameClipsCommand implements BotButtonCommands {
 
         String casterName;
 
-        List<TwitchClip> twitchClipsByGameName;
-
         try {
-            twitchClipsByGameName = clipsController.getClipsByGameName(gameName).getData();
+            clipList = clipsController.getClipsByGameName(gameName).getData();
         } catch (URISyntaxException e) {
         throw new RuntimeException(e);
         } catch (IOException e) {
@@ -68,9 +67,9 @@ public class GameClipsCommand implements BotButtonCommands {
 //            throw new RuntimeException(e);
 //        }
 
-        clipUrl = twitchClipsByGameName.get(0).getUrl();
-        casterName = twitchClipsByGameName.get(0).getBroadcasterName();
-        var broadcasterId = twitchClipsByGameName.get(0).getBroadcasterId();
+        clipUrl = clipList.get(0).getUrl();
+        casterName = clipList.get(0).getBroadcasterName();
+        var broadcasterId = clipList.get(0).getBroadcasterId();
 
 
         broadcaster.setBroadcasterName(casterName);
@@ -95,7 +94,7 @@ public class GameClipsCommand implements BotButtonCommands {
 
     @Override
     public String clickNextButton(Update update) {
-        return nextClipButtonCommand.actionWithMessage(update);
+        return nextClipButtonCommand.actionWithMessage(update, clipList);
     }
 
     public InlineKeyboardMarkup gameClipsCommandKeyboard(String casterName) {

@@ -26,9 +26,9 @@ public class ClipsController {
         return clipService.getClipsByBroadcasterName(broadcasterName);
     }
 
-//    public List<TwitchClipsDto> getClipsByUserFollowList(List<Broadcaster> userFollowList) throws URISyntaxException, IOException, ExecutionException, InterruptedException {
-//        return clipService.getClipsByUserFollowList(userFollowList);
-//    }
+    public List<CompletableFuture<TwitchClipsDto>> getClipsByUserFollowList(List<Broadcaster> userFollowList) throws URISyntaxException, IOException, ExecutionException, InterruptedException {
+        return clipService.getClipsByUserFollowList(userFollowList);
+    }
 
     public CompletableFuture<TwitchClipsDto> test(int bcId, String date) throws IOException, URISyntaxException, ExecutionException, InterruptedException {
         return clipService.test(bcId, date);

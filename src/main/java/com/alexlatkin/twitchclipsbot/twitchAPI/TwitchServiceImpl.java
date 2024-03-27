@@ -1,15 +1,13 @@
 package com.alexlatkin.twitchclipsbot.twitchAPI;
 
-import aj.org.objectweb.asm.TypeReference;
 import com.alexlatkin.twitchclipsbot.config.TwitchConfig;
 import com.alexlatkin.twitchclipsbot.model.dto.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
-import java.io.DataInput;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -21,7 +19,7 @@ import java.time.Duration;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Service
 public class TwitchServiceImpl implements TwitchService {
 
@@ -128,9 +126,16 @@ public class TwitchServiceImpl implements TwitchService {
         var response = client.sendAsync(request, HttpResponse.BodyHandlers.ofString(StandardCharsets.UTF_8))
                 .thenApply(HttpResponse::body);
 
-        var twitchClipsDtoCompletableFuture = response.thenApply(TwitchClipsDto::parser);
-
-        System.out.println(twitchClipsDtoCompletableFuture.get());
+        var twitchClipsDtoCompletableFuture = response.thenApply(data -> {
+            var twitchClipsDto = new TwitchClipsDto();
+            ObjectMapper mapper = new ObjectMapper();
+            try {
+                twitchClipsDto = mapper.readValue(data, TwitchClipsDto.class);
+            } catch (JsonProcessingException e) {
+                throw new RuntimeException(e);
+            }
+            return twitchClipsDto;
+        });
 
         return twitchClipsDtoCompletableFuture;
     }

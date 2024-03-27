@@ -27,6 +27,7 @@ public class CasterClipsCommand implements BotButtonCommands {
     FollowButtonCommand followButtonCommand;
     BlockButtonCommand blockButtonCommand;
     NextClipButtonCommand nextClipButtonCommand;
+    List<TwitchClip> clipList;
     @Override
     public BotApiMethod firstMessage(Update update) {
         var chatId = update.getMessage().getChatId().toString();
@@ -72,7 +73,7 @@ public class CasterClipsCommand implements BotButtonCommands {
 
     @Override
     public String clickNextButton(Update update) {
-        return nextClipButtonCommand.actionWithMessage(update);
+        return nextClipButtonCommand.actionWithMessage(update, clipList);
     }
 
     public InlineKeyboardMarkup casterClipsCommandKeyboard(String casterName) {

@@ -1,5 +1,6 @@
 package com.alexlatkin.twitchclipsbot.telegramBotCommands.buttonCommands.commandsWIthAnswer;
 
+import com.alexlatkin.twitchclipsbot.model.dto.TwitchClip;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
@@ -12,7 +13,7 @@ import java.util.List;
 public class NextClipButtonCommand implements ButtonCommandsWithAnswer {
 
     @Override
-    public String actionWithMessage(Update update) {
+    public String actionWithMessage(Update update, List<TwitchClip> clipList) {
         return "Hi";
     }
 

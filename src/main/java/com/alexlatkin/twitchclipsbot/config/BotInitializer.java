@@ -5,6 +5,7 @@ import com.alexlatkin.twitchclipsbot.controller.BroadcasterController;
 import com.alexlatkin.twitchclipsbot.controller.ClipsController;
 import com.alexlatkin.twitchclipsbot.controller.TelegramBot;
 import com.alexlatkin.twitchclipsbot.controller.UserController;
+import com.alexlatkin.twitchclipsbot.model.dto.TwitchClip;
 import com.alexlatkin.twitchclipsbot.model.entity.Broadcaster;
 import com.alexlatkin.twitchclipsbot.telegramBotCommands.buttonCommands.BlockButtonCommand;
 import com.alexlatkin.twitchclipsbot.telegramBotCommands.buttonCommands.FollowButtonCommand;
@@ -18,6 +19,7 @@ import org.telegram.telegrambots.meta.TelegramBotsApi;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 @Component
@@ -37,10 +39,12 @@ public class BotInitializer {
         TelegramBotsApi telegramBotsApi = new TelegramBotsApi(DefaultBotSession.class);
 
         GameClipsCommand gameClipsCommand = new GameClipsCommand(clipsController, new Broadcaster()
-                                                                , followButtonCommand, blockButtonCommand, nextClipButtonCommand);
+                                                                , followButtonCommand, blockButtonCommand, nextClipButtonCommand
+                                                                , new ArrayList<TwitchClip>());
 
         CasterClipsCommand casterClipsCommand = new CasterClipsCommand(clipsController, new Broadcaster()
-                                                                    , followButtonCommand, blockButtonCommand, nextClipButtonCommand);
+                                                                    , followButtonCommand, blockButtonCommand, nextClipButtonCommand
+                                                                    , new ArrayList<TwitchClip>());
 
         Map<String, BotCommands> textCommands = Map.of("/start", new RegisterCommand(userController)
                                                     ,"/help", new HelpCommand(userController, broadcasterController, clipsController)
